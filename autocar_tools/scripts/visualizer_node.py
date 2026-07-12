@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import rospy
 import numpy as np
-from geometry_msgs.msg import Point, PoseStamped
+from nav_msgs.msg import Path
+from geometry_msgs.msg import Point
 from autocar_interfaces.msg import ManeuverSequence, SemanticWorldModel
 from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import String
@@ -19,7 +20,7 @@ class VisualizerNode:
         self.sub_maneuver = rospy.Subscriber('/maneuver_sequence', ManeuverSequence, self.maneuver_callback)
         self.sub_world_model = rospy.Subscriber('/semantic_world_model', SemanticWorldModel, self.world_model_callback)
         self.sub_mission = rospy.Subscriber('/mission_status', String, self.mission_callback)
-        self.sub_goal = rospy.Subscriber('/move_base_simple/goal', PoseStamped, self.goal_callback)
+        self.sub_global_plan = rospy.Subscriber('/move_base/GlobalPlanner/plan', Path, self.global_plan_callback)
 
         # Publishers
         self.pub_predicted_traj = rospy.Publisher('/visualization/predicted_trajectory', Marker, queue_size=10)
@@ -31,7 +32,13 @@ class VisualizerNode:
 
         rospy.loginfo("[Visualizer] RViz Visualizer Node initialized.")
 
-    def goal_callback(self, msg):
+    def global_plan_callback(self, msg):
+        if not msg.poses:
+            return
+
+        # Get the final pose of the plan (the goal)
+        goal_pose = msg.poses[-1]
+
         marker = Marker()
         marker.header.frame_id = msg.header.frame_id if msg.header.frame_id else "map"
         marker.header.stamp = rospy.Time.now()
@@ -40,9 +47,9 @@ class VisualizerNode:
         marker.type = Marker.CUBE
         marker.action = Marker.ADD
 
-        # Same pose as the RViz goal
-        marker.pose.position = msg.pose.position
-        marker.pose.orientation = msg.pose.orientation
+        # Same pose as the last point in the path (the goal)
+        marker.pose.position = goal_pose.pose.position
+        marker.pose.orientation = goal_pose.pose.orientation
 
         # Parking slot dimensions (meters)
         marker.scale.x = 1.25      # Length
@@ -59,7 +66,7 @@ class VisualizerNode:
         marker.lifetime = rospy.Duration(0)
 
         self.pub_parking_spot.publish(marker)
-        rospy.loginfo("Parking spot marker published")
+        rospy.loginfo("Parking spot marker published (path detected)")
 
     def mission_callback(self, msg):
         self.current_mission_status = msg.data
