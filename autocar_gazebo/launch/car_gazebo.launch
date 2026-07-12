@@ -1,0 +1,59 @@
+<launch>
+  <!-- Launch arguments -->
+  <arg name="world_name" default="$(find autocar_gazebo)/worlds/warehouse1.world"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <!-- Use sim time -->
+  <param name="use_sim_time" value="$(arg use_sim_time)" />
+
+  <!-- Load PID gains for closed-loop velocity control -->
+  <rosparam file="$(find autocar_navigation)/config/controllers/pid_gains.yaml" />
+
+  <!-- Load controller configurations -->
+  <rosparam file="$(find autocar_navigation)/config/controllers/car_controllers.yaml" />
+
+  <!-- Start Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  <!-- Load URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find autocar_description)/urdf/car.xacro'"/>
+
+  <!-- Spawn robot in Gazebo -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-param robot_description -urdf -model autocar -x 0.0 -y 0.0 -z 0.2" />
+
+  <!-- Spawn controllers (joint_state_controller and the 6 Ackerman joint controllers) -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen"
+        args="joint_state_controller 
+              front_left_wheel_velocity_controller 
+              front_right_wheel_velocity_controller 
+              rear_left_wheel_velocity_controller 
+              rear_right_wheel_velocity_controller 
+              front_left_steering_position_controller 
+              front_right_steering_position_controller"
+        launch-prefix="bash -c 'sleep 3; $0 $@'"/>
+
+  <!-- Robot State Publisher to publish TF transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen" />
+
+  <!-- Ackerman steering control mapper & odometry publisher -->
+  <node name="ackermann_controller" pkg="autocar_navigation" type="ackermann_controller" output="screen" />
+
+  <!-- 4. Start RViz -->
+  <!-- <node pkg="rviz" type="rviz" name="rviz" required="true"
+        args="-d $(find autocar_description)/rviz/mapping.rviz"/> -->
+
+</launch>

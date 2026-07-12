@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="campus_bench">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision_seat">
+        <pose>0 0 0.4 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.8 0.6 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual_seat">
+        <pose>0 0 0.4 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.8 0.6 0.08</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Wood</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_backrest">
+        <pose>0 0.26 0.8 0.2 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.8 0.08 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Wood</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_leg_left">
+        <pose>-0.8 0 0.2 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.5 0.4</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_leg_right">
+        <pose>0.8 0 0.2 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.5 0.4</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

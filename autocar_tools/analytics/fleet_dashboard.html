@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Fleet Decision Intelligence Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #090d16 0%, #15103c 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.2);
+        }
+        .stat-value {
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+            <div>
+                <h1 class="text-4xl font-extrabold tracking-tight">Autonomous Vehicle Intelligence Panel</h1>
+                <p class="text-slate-400 mt-2">Next-Gen Maneuver Planning, World Modeling & Hybrid Optimization Analytics</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span class="h-2.5 w-2.5 rounded-full bg-emerald-400 mr-2 animate-ping"></span>
+                    Maneuver Planner Engine: Online
+                </span>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-10">
+            <div class="glass-card p-6 flex flex-col justify-between">
+                <span class="text-slate-400 font-medium text-sm">Total Missions</span>
+                <span class="text-4xl font-black stat-value mt-4">12</span>
+            </div>
+            <div class="glass-card p-6 flex flex-col justify-between">
+                <span class="text-slate-400 font-medium text-sm">Task Success Rate</span>
+                <span class="text-4xl font-black stat-value mt-4">100.0%</span>
+            </div>
+            <div class="glass-card p-6 flex flex-col justify-between">
+                <span class="text-slate-400 font-medium text-sm">Collision Rate</span>
+                <span class="text-4xl font-black stat-value mt-4">2.1%</span>
+            </div>
+            <div class="glass-card p-6 flex flex-col justify-between">
+                <span class="text-slate-400 font-medium text-sm">Avg Utility Score</span>
+                <span class="text-4xl font-black stat-value mt-4">85.3/100</span>
+            </div>
+            <div class="glass-card p-6 flex flex-col justify-between">
+                <span class="text-slate-400 font-medium text-sm">Cumulative Reward</span>
+                <span class="text-4xl font-black stat-value mt-4">15.00</span>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+            <div class="glass-card p-8 col-span-1">
+                <h3 class="text-xl font-bold mb-6">Maneuver Situations</h3>
+                <div class="h-[280px]">
+                    <canvas id="situationChart"></canvas>
+                </div>
+            </div>
+            <div class="glass-card p-8 col-span-1">
+                <h3 class="text-xl font-bold mb-6">Planner Selection</h3>
+                <div class="h-[280px]">
+                    <canvas id="plannerChart"></canvas>
+                </div>
+            </div>
+            <div class="glass-card p-8 col-span-1">
+                <h3 class="text-xl font-bold mb-6">Policy Success Progression</h3>
+                <div class="h-[280px]">
+                    <canvas id="versionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Policy Version Table -->
+        <section class="glass-card p-8 mb-10 overflow-hidden">
+            <h3 class="text-xl font-bold mb-6">Registered Policy & Planner Competitors</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-800 text-left">
+                    <thead>
+                        <tr class="text-slate-400 text-sm font-semibold">
+                            <th class="py-3 px-4">Policy / Planner Version</th>
+                            <th class="py-3 px-4">Deployment Date</th>
+                            <th class="py-3 px-4">Avg Success Rate</th>
+                            <th class="py-3 px-4">Collision Frequency</th>
+                            <th class="py-3 px-4">Normalized Reward</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-slate-300 text-sm">
+                        <tr><td class="py-4 px-4 font-semibold text-indigo-400">ppo_v1_baseline</td><td class="py-4 px-4"></td><td class="py-4 px-4">72.0%</td><td class="py-4 px-4">15.0%</td><td class="py-4 px-4">5.20</td></tr><tr><td class="py-4 px-4 font-semibold text-indigo-400">ppo_v2_adaptive</td><td class="py-4 px-4"></td><td class="py-4 px-4">84.0%</td><td class="py-4 px-4">8.0%</td><td class="py-4 px-4">9.40</td></tr><tr><td class="py-4 px-4 font-semibold text-indigo-400">ppo_v3_online_rl</td><td class="py-4 px-4"></td><td class="py-4 px-4">94.0%</td><td class="py-4 px-4">3.0%</td><td class="py-4 px-4">14.10</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Situations
+        const sitCtx = document.getElementById('situationChart').getContext('2d');
+        new Chart(sitCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Straight Corridor', 'Narrow Corridor', 'Loading Dock', 'Reverse Parking', 'Dead End', 'Dynamic Obstacle'],
+                datasets: [{
+                    data: [85, 60, 45, 30, 15, 25],
+                    backgroundColor: ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#cbd5e1', font: { family: 'Outfit', size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Planner usage
+        const planCtx = document.getElementById('plannerChart').getContext('2d');
+        new Chart(planCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['Hybrid A*', 'Reeds-Shepp', 'State Lattice'],
+                datasets: [{
+                    data: [120, 80, 40],
+                    backgroundColor: ['rgba(99, 102, 241, 0.7)', 'rgba(168, 85, 247, 0.7)', 'rgba(6, 182, 212, 0.7)'],
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { display: false } }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#cbd5e1', font: { family: 'Outfit', size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Versions
+        const verCtx = document.getElementById('versionChart').getContext('2d');
+        const versions = [{'version': 'ppo_v1_baseline', 'date': '2026-07-01', 'success_rate': 0.72, 'collision_rate': 0.15, 'avg_reward': 5.2}, {'version': 'ppo_v2_adaptive', 'date': '2026-07-03', 'success_rate': 0.84, 'collision_rate': 0.08, 'avg_reward': 9.4}, {'version': 'ppo_v3_online_rl', 'date': '2026-07-05', 'success_rate': 0.94, 'collision_rate': 0.03, 'avg_reward': 14.1}];
+        const labels = versions.map(v => v.version || v.version_name || 'version');
+        const successData = versions.map(v => (v.success_rate || 0) * 100);
+
+        new Chart(verCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Success %',
+                    data: successData,
+                    borderColor: '#c084fc',
+                    backgroundColor: 'rgba(192, 132, 252, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                    y: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255, 255, 255, 0.05)' } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

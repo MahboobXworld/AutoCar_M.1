@@ -1,0 +1,8 @@
+string motion_type
+float64 target_distance
+float64 steering_angle
+float64 target_velocity
+float64 duration
+float64 expected_heading
+geometry_msgs/Pose expected_final_pose
+string success_criteria

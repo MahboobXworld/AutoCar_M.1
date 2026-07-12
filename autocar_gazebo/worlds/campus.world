@@ -1,0 +1,554 @@
+<sdf version='1.6'>
+  <world name='campus_world'>
+    <light name='sun' type='directional'>
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 50 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1000 1000</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1000 1000</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grass</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name='road_main_west'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>-210 0 0.002 0 0 0</pose>
+          <geometry><box><size>380 8 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>-210 0 0.002 0 0 0</pose>
+          <geometry><box><size>380 8 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_main_east'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>210 0 0.002 0 0 0</pose>
+          <geometry><box><size>380 8 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>210 0 0.002 0 0 0</pose>
+          <geometry><box><size>380 8 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_north'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 200 0.002 0 0 0</pose>
+          <geometry><box><size>800 6 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 200 0.002 0 0 0</pose>
+          <geometry><box><size>800 6 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_south'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 -200 0.002 0 0 0</pose>
+          <geometry><box><size>800 6 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 -200 0.002 0 0 0</pose>
+          <geometry><box><size>800 6 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_conn_west'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>-350 0 0.002 0 0 0</pose>
+          <geometry><box><size>6 400 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>-350 0 0.002 0 0 0</pose>
+          <geometry><box><size>6 400 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_conn_east'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>350 0 0.002 0 0 0</pose>
+          <geometry><box><size>6 400 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>350 0 0.002 0 0 0</pose>
+          <geometry><box><size>6 400 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_conn_central_north'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 110 0.002 0 0 0</pose>
+          <geometry><box><size>8 180 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 110 0.002 0 0 0</pose>
+          <geometry><box><size>8 180 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='road_conn_central_south'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 -110 0.002 0 0 0</pose>
+          <geometry><box><size>8 180 0.004</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 -110 0.002 0 0 0</pose>
+          <geometry><box><size>8 180 0.004</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='roundabout_road'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 0 0.001 0 0 0</pose>
+          <geometry><cylinder><radius>20.0</radius><length>0.002</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Road</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 0 0.001 0 0 0</pose>
+          <geometry><cylinder><radius>20.0</radius><length>0.002</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='roundabout_island'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>0 0 0.08 0 0 0</pose>
+          <geometry><cylinder><radius>12.0</radius><length>0.16</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grass</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 0 0.08 0 0 0</pose>
+          <geometry><cylinder><radius>12.0</radius><length>0.16</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='roundabout_statue'>
+      <static>true</static>
+      <pose>0 0 0.16 0 0 0</pose>
+      <link name='link'>
+        <visual name='pedestal'>
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><box><size>2.0 2.0 1.0</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+        <visual name='art'>
+          <pose>0 0 2.0 0 0 0</pose>
+          <geometry><sphere><radius>1.2</radius></sphere></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/ClearBlueHighlight</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>1.5</radius><length>3.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+    <include>
+      <name>admin_building</name>
+      <uri>model://academic_building</uri>
+      <pose>0 90 0 0 0 3.1415</pose>
+    </include>
+    <include>
+      <name>library</name>
+      <uri>model://academic_building</uri>
+      <pose>120 90 0 0 0 3.1415</pose>
+    </include>
+    <include>
+      <name>academic_a</name>
+      <uri>model://academic_building</uri>
+      <pose>-120 90 0 0 0 0.0</pose>
+    </include>
+    <include>
+      <name>academic_b</name>
+      <uri>model://academic_building</uri>
+      <pose>-240 90 0 0 0 0.0</pose>
+    </include>
+    <include>
+      <name>auditorium</name>
+      <uri>model://academic_building</uri>
+      <pose>120 -90 0 0 0 0.0</pose>
+    </include>
+    <include>
+      <name>cafeteria</name>
+      <uri>model://academic_building</uri>
+      <pose>-120 -90 0 0 0 3.1415</pose>
+    </include>
+    <include>
+      <name>laboratories</name>
+      <uri>model://academic_building</uri>
+      <pose>-240 -90 0 0 0 3.1415</pose>
+    </include>
+    <include>
+      <name>hostel_a</name>
+      <uri>model://campus_house</uri>
+      <pose>260 110 0 0 0 0.0</pose>
+    </include>
+    <include>
+      <name>hostel_b</name>
+      <uri>model://campus_house</uri>
+      <pose>260 150 0 0 0 0.0</pose>
+    </include>
+    <include>
+      <name>hostel_c</name>
+      <uri>model://campus_house</uri>
+      <pose>310 110 0 0 0 3.1415</pose>
+    </include>
+    <include>
+      <name>hostel_d</name>
+      <uri>model://campus_house</uri>
+      <pose>310 150 0 0 0 3.1415</pose>
+    </include>
+    <model name='library_plaza'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>60 45 0.005 0 0 0</pose>
+          <geometry><box><size>200 40 0.002</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>60 45 0.005 0 0 0</pose>
+          <geometry><box><size>200 40 0.002</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='sports_ground'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>260 -110 0.003 0 0 0</pose>
+          <geometry><box><size>100 80 0.001</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Green</name></script></material>
+        </visual>
+      </link>
+    </model>
+    <model name='entrance_security_cabin'>
+      <static>true</static>
+      <pose>-380 12 0 0 0 0</pose>
+      <link name='link'>
+        <visual name='cabin'>
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><box><size>3 3 3</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Wood</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><box><size>3 3 3</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name='parking_lot'>
+      <static>true</static>
+      <link name='link'>
+        <visual name='visual'>
+          <pose>-150 25 0.003 0 0 0</pose>
+          <geometry><box><size>40 30 0.002</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+        <collision name='collision'>
+          <pose>-150 25 0.003 0 0 0</pose>
+          <geometry><box><size>40 30 0.002</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <include><name>street_light_main_n_0</name><uri>model://street_light</uri><pose>-380 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_0</name><uri>model://street_light</uri><pose>-380 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_1</name><uri>model://street_light</uri><pose>-335 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_1</name><uri>model://street_light</uri><pose>-335 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_2</name><uri>model://street_light</uri><pose>-290 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_2</name><uri>model://street_light</uri><pose>-290 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_3</name><uri>model://street_light</uri><pose>-245 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_3</name><uri>model://street_light</uri><pose>-245 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_4</name><uri>model://street_light</uri><pose>-200 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_4</name><uri>model://street_light</uri><pose>-200 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_5</name><uri>model://street_light</uri><pose>-155 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_5</name><uri>model://street_light</uri><pose>-155 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_6</name><uri>model://street_light</uri><pose>-110 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_6</name><uri>model://street_light</uri><pose>-110 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_7</name><uri>model://street_light</uri><pose>-65 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_7</name><uri>model://street_light</uri><pose>-65 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_8</name><uri>model://street_light</uri><pose>70 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_8</name><uri>model://street_light</uri><pose>70 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_9</name><uri>model://street_light</uri><pose>115 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_9</name><uri>model://street_light</uri><pose>115 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_10</name><uri>model://street_light</uri><pose>160 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_10</name><uri>model://street_light</uri><pose>160 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_11</name><uri>model://street_light</uri><pose>205 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_11</name><uri>model://street_light</uri><pose>205 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_12</name><uri>model://street_light</uri><pose>250 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_12</name><uri>model://street_light</uri><pose>250 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_13</name><uri>model://street_light</uri><pose>295 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_13</name><uri>model://street_light</uri><pose>295 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_14</name><uri>model://street_light</uri><pose>340 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_14</name><uri>model://street_light</uri><pose>340 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>street_light_main_n_15</name><uri>model://street_light</uri><pose>385 6.0 0 0 0 0</pose></include>
+    <include><name>street_light_main_s_15</name><uri>model://street_light</uri><pose>385 -6.0 0 0 0 3.1415</pose></include>
+    <include><name>tree_main_n_0</name><uri>model://campus_tree</uri><pose>-390 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_0</name><uri>model://campus_tree</uri><pose>-390 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_1</name><uri>model://campus_tree</uri><pose>-370 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_1</name><uri>model://campus_tree</uri><pose>-370 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_2</name><uri>model://campus_tree</uri><pose>-350 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_2</name><uri>model://campus_tree</uri><pose>-350 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_3</name><uri>model://campus_tree</uri><pose>-330 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_3</name><uri>model://campus_tree</uri><pose>-330 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_4</name><uri>model://campus_tree</uri><pose>-310 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_4</name><uri>model://campus_tree</uri><pose>-310 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_5</name><uri>model://campus_tree</uri><pose>-290 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_5</name><uri>model://campus_tree</uri><pose>-290 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_6</name><uri>model://campus_tree</uri><pose>-270 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_6</name><uri>model://campus_tree</uri><pose>-270 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_7</name><uri>model://campus_tree</uri><pose>-250 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_7</name><uri>model://campus_tree</uri><pose>-250 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_8</name><uri>model://campus_tree</uri><pose>-230 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_8</name><uri>model://campus_tree</uri><pose>-230 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_9</name><uri>model://campus_tree</uri><pose>-210 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_9</name><uri>model://campus_tree</uri><pose>-210 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_10</name><uri>model://campus_tree</uri><pose>-190 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_10</name><uri>model://campus_tree</uri><pose>-190 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_11</name><uri>model://campus_tree</uri><pose>-170 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_11</name><uri>model://campus_tree</uri><pose>-170 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_12</name><uri>model://campus_tree</uri><pose>-150 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_12</name><uri>model://campus_tree</uri><pose>-150 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_13</name><uri>model://campus_tree</uri><pose>-130 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_13</name><uri>model://campus_tree</uri><pose>-130 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_14</name><uri>model://campus_tree</uri><pose>-110 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_14</name><uri>model://campus_tree</uri><pose>-110 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_15</name><uri>model://campus_tree</uri><pose>-90 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_15</name><uri>model://campus_tree</uri><pose>-90 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_16</name><uri>model://campus_tree</uri><pose>-70 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_16</name><uri>model://campus_tree</uri><pose>-70 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_17</name><uri>model://campus_tree</uri><pose>-50 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_17</name><uri>model://campus_tree</uri><pose>-50 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_18</name><uri>model://campus_tree</uri><pose>-30 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_18</name><uri>model://campus_tree</uri><pose>-30 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_19</name><uri>model://campus_tree</uri><pose>30 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_19</name><uri>model://campus_tree</uri><pose>30 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_20</name><uri>model://campus_tree</uri><pose>50 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_20</name><uri>model://campus_tree</uri><pose>50 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_21</name><uri>model://campus_tree</uri><pose>70 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_21</name><uri>model://campus_tree</uri><pose>70 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_22</name><uri>model://campus_tree</uri><pose>90 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_22</name><uri>model://campus_tree</uri><pose>90 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_23</name><uri>model://campus_tree</uri><pose>110 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_23</name><uri>model://campus_tree</uri><pose>110 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_24</name><uri>model://campus_tree</uri><pose>130 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_24</name><uri>model://campus_tree</uri><pose>130 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_25</name><uri>model://campus_tree</uri><pose>150 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_25</name><uri>model://campus_tree</uri><pose>150 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_26</name><uri>model://campus_tree</uri><pose>170 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_26</name><uri>model://campus_tree</uri><pose>170 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_27</name><uri>model://campus_tree</uri><pose>190 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_27</name><uri>model://campus_tree</uri><pose>190 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_28</name><uri>model://campus_tree</uri><pose>210 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_28</name><uri>model://campus_tree</uri><pose>210 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_29</name><uri>model://campus_tree</uri><pose>230 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_29</name><uri>model://campus_tree</uri><pose>230 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_30</name><uri>model://campus_tree</uri><pose>250 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_30</name><uri>model://campus_tree</uri><pose>250 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_31</name><uri>model://campus_tree</uri><pose>270 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_31</name><uri>model://campus_tree</uri><pose>270 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_32</name><uri>model://campus_tree</uri><pose>290 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_32</name><uri>model://campus_tree</uri><pose>290 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_33</name><uri>model://campus_tree</uri><pose>310 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_33</name><uri>model://campus_tree</uri><pose>310 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_34</name><uri>model://campus_tree</uri><pose>330 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_34</name><uri>model://campus_tree</uri><pose>330 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_35</name><uri>model://campus_tree</uri><pose>350 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_35</name><uri>model://campus_tree</uri><pose>350 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_36</name><uri>model://campus_tree</uri><pose>370 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_36</name><uri>model://campus_tree</uri><pose>370 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_n_37</name><uri>model://campus_tree</uri><pose>390 8.0 0 0 0 0</pose></include>
+    <include><name>tree_main_s_37</name><uri>model://campus_tree</uri><pose>390 -8.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_38</name><uri>model://campus_tree</uri><pose>30 60.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_39</name><uri>model://campus_tree</uri><pose>55 60.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_40</name><uri>model://campus_tree</uri><pose>80 60.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_41</name><uri>model://campus_tree</uri><pose>105 60.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_42</name><uri>model://campus_tree</uri><pose>130 60.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_43</name><uri>model://campus_tree</uri><pose>155 60.0 0 0 0 0</pose></include>
+    <include><name>tree_plaza_44</name><uri>model://campus_tree</uri><pose>180 60.0 0 0 0 0</pose></include>
+    <include><name>bench_plaza_0</name><uri>model://campus_bench</uri><pose>40 50.0 0 0 0 0</pose></include>
+    <include><name>bench_plaza_1</name><uri>model://campus_bench</uri><pose>70 50.0 0 0 0 0</pose></include>
+    <include><name>bench_plaza_2</name><uri>model://campus_bench</uri><pose>100 50.0 0 0 0 0</pose></include>
+    <include><name>bench_plaza_3</name><uri>model://campus_bench</uri><pose>130 50.0 0 0 0 0</pose></include>
+    <include><name>bench_plaza_4</name><uri>model://campus_bench</uri><pose>160 50.0 0 0 0 0</pose></include>
+    <include><name>stop_sign_west_intersect</name><uri>model://stop_sign</uri><pose>-355 5 0 0 0 0</pose></include>
+    <include><name>stop_sign_east_intersect</name><uri>model://stop_sign</uri><pose>345 -5 0 0 0 3.1415</pose></include>
+    <include><name>stop_sign_central_north</name><uri>model://stop_sign</uri><pose>5 22 0 0 0 -1.5707</pose></include>
+    <include><name>traffic_light_4way_north</name><uri>model://traffic_light</uri><pose>5 205 0 0 0 -1.5707</pose></include>
+    <include><name>traffic_light_4way_south</name><uri>model://traffic_light</uri><pose>-5 -205 0 0 0 1.5707</pose></include>
+    <actor name='student_walking_boulevard'>
+      <skin><filename>model://walk.dae</filename><scale>1.0</scale></skin>
+      <animation name='walking'><filename>model://walk.dae</filename><scale>1.0</scale><interpolate_x>true</interpolate_x></animation>
+      <script>
+        <loop>true</loop>
+        <auto_start>true</auto_start>
+        <trajectory id='0' type='walking'>
+          <waypoint><time>0</time><pose>4 30 0 0 0 1.5707</pose></waypoint>
+          <waypoint><time>15</time><pose>4 150 0 0 0 1.5707</pose></waypoint>
+          <waypoint><time>17</time><pose>4 150 0 0 0 -1.5707</pose></waypoint>
+          <waypoint><time>32</time><pose>4 30 0 0 0 -1.5707</pose></waypoint>
+          <waypoint><time>34</time><pose>4 30 0 0 0 1.5707</pose></waypoint>
+        </trajectory>
+      </script>
+    </actor>
+    <actor name='student_crossing_library'>
+      <skin><filename>model://walk.dae</filename><scale>1.0</scale></skin>
+      <animation name='walking'><filename>model://walk.dae</filename><scale>1.0</scale><interpolate_x>true</interpolate_x></animation>
+      <script>
+        <loop>true</loop>
+        <auto_start>true</auto_start>
+        <trajectory id='0' type='walking'>
+          <waypoint><time>0</time><pose>120 -6 0 0 0 1.5707</pose></waypoint>
+          <waypoint><time>6</time><pose>120 6 0 0 0 1.5707</pose></waypoint>
+          <waypoint><time>10</time><pose>120 6 0 0 0 -1.5707</pose></waypoint>
+          <waypoint><time>16</time><pose>120 -6 0 0 0 -1.5707</pose></waypoint>
+          <waypoint><time>20</time><pose>120 -6 0 0 0 1.5707</pose></waypoint>
+        </trajectory>
+      </script>
+    </actor>
+    <actor name='student_plaza_loop'>
+      <skin><filename>model://walk.dae</filename><scale>1.0</scale></skin>
+      <animation name='walking'><filename>model://walk.dae</filename><scale>1.0</scale><interpolate_x>true</interpolate_x></animation>
+      <script>
+        <loop>true</loop>
+        <auto_start>true</auto_start>
+        <trajectory id='0' type='walking'>
+          <waypoint><time>0</time><pose>60 45 0 0 0 0</pose></waypoint>
+          <waypoint><time>10</time><pose>140 45 0 0 0 0</pose></waypoint>
+          <waypoint><time>13</time><pose>140 45 0 0 0 1.5707</pose></waypoint>
+          <waypoint><time>17</time><pose>140 55 0 0 0 3.1415</pose></waypoint>
+          <waypoint><time>27</time><pose>60 55 0 0 0 3.1415</pose></waypoint>
+          <waypoint><time>30</time><pose>60 55 0 0 0 -1.5707</pose></waypoint>
+          <waypoint><time>34</time><pose>60 45 0 0 0 0</pose></waypoint>
+        </trajectory>
+      </script>
+    </actor>
+    <model name='boundary_wall_north'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <pose>0 220 1.5 0 0 0</pose>
+          <geometry><box><size>820 1 3</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <pose>0 220 1.5 0 0 0</pose>
+          <geometry><box><size>820 1 3</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+    </model>
+    <model name='boundary_wall_south'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <pose>0 -220 1.5 0 0 0</pose>
+          <geometry><box><size>820 1 3</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <pose>0 -220 1.5 0 0 0</pose>
+          <geometry><box><size>820 1 3</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+    </model>
+    <model name='boundary_wall_east'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <pose>410 0 1.5 0 0 0</pose>
+          <geometry><box><size>1 440 3</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <pose>410 0 1.5 0 0 0</pose>
+          <geometry><box><size>1 440 3</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+    </model>
+    <model name='boundary_wall_west'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <pose>-410 0 1.5 0 0 0</pose>
+          <geometry><box><size>1 440 3</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <pose>-410 0 1.5 0 0 0</pose>
+          <geometry><box><size>1 440 3</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+    </model>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+  </world>
+</sdf>

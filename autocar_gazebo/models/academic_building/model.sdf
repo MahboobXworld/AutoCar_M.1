@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="academic_building">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision_main">
+        <pose>0 0 10 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>40 25 20</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="collision_wing">
+        <pose>-25 0 7.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>15 15 15</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual_main">
+        <pose>0 0 10 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>40 25 20</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Bricks</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_wing">
+        <pose>-25 0 7.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>15 15 15</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_glass">
+        <pose>0 12.6 10 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>30 0.2 12</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/ClearBlueHighlight</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

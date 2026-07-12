@@ -1,0 +1,43 @@
+frequency: 30
+sensor_timeout: 0.1
+two_d_mode: true
+transform_time_offset: 0.0
+transform_timeout: 0.0
+print_diagnostics: true
+debug: false
+
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom
+
+# Odom source (Wheel Encoders, dynamically filtered by localization_manager)
+odom0: /diff_drive_controller/odom_filtered
+odom0_config: [false, false, false,
+               false, false, false,
+               true,  false, false,
+               false, false, true,
+               false, false, false]
+odom0_differential: false
+odom0_relative: false
+
+# Scan Matcher Odometry (Hector SLAM output)
+odom1: /scanmatch_odom
+odom1_config: [true,  true,  false,
+               false, false, true,
+               false, false, false,
+               false, false, false,
+               false, false, false]
+odom1_differential: true
+odom1_relative: false
+
+# IMU source
+imu0: /imu/data
+imu0_config: [false, false, false,
+              false, false, true,
+              false, false, false,
+              false, false, true,
+              false, false, false]
+imu0_differential: false
+imu0_relative: true
+imu0_remove_gravitational_acceleration: true

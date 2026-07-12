@@ -1,0 +1,76 @@
+<launch>
+  <!-- Global Arguments -->
+  <arg name="world_type" default="warehouse"/> <!-- warehouse or campus -->
+  <arg name="local_planner" default="dwa"/>    <!-- dwa or teb -->
+  <arg name="use_rl" default="false"/>
+  <arg name="use_rviz" default="true"/>
+  <arg name="gui" default="true"/>
+
+  <!-- Setup AMCL and map options based on world type -->
+  <arg name="use_amcl" default="$(eval arg('world_type') == 'warehouse')"/>
+  <arg name="map_file" default="$(find autocar_localization)/maps/my_map.yaml"/>
+
+  <!-- Initial Spawn Pose -->
+  <arg name="initial_pose_x" default="$(eval -370.0 if arg('world_type') == 'campus' else 0.0)"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <!-- 1. Simulation Subsystem -->
+  <include file="$(find autocar_bringup)/launch/simulation.launch">
+    <arg name="world_type" value="$(arg world_type)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- 2. Localization Subsystem -->
+  <include file="$(find autocar_bringup)/launch/localization.launch">
+    <arg name="use_amcl" value="$(arg use_amcl)"/>
+    <arg name="map_file" value="$(arg map_file)"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- 3. Navigation Subsystem -->
+  <include file="$(find autocar_bringup)/launch/navigation.launch">
+    <arg name="local_planner" value="$(arg local_planner)"/>
+  </include>
+
+  <!-- 4. Behavior Subsystem -->
+  <include file="$(find autocar_bringup)/launch/behavior.launch">
+    <arg name="use_rl" value="$(arg use_rl)"/>
+  </include>
+
+  <!-- 5. AI Subsystem -->
+  <include file="$(find autocar_bringup)/launch/ai.launch">
+    <arg name="use_rl" value="$(arg use_rl)"/>
+  </include>
+
+  <!-- 6. Perception Subsystem -->
+  <include file="$(find autocar_bringup)/launch/perception.launch"/>
+
+  <!-- 7. Maneuver Planners -->
+  <node pkg="autocar_maneuver_planner" type="maneuver_planner_node.py" name="maneuver_planner_node" output="screen" respawn="true" />
+  <node pkg="autocar_maneuver_planner" type="path_alignment_planner_node.py" name="path_alignment_planner_node" output="screen" respawn="true" />
+
+  <!-- 8. Tools & Monitoring -->
+  <!-- Performance and decision loggers -->
+  <node pkg="autocar_tools" type="mission_performance_logger_node" name="mission_performance_logger" output="screen" respawn="true">
+    <param name="db_path" value="$(find autocar_ai)/database/fleet_learning.db" />
+  </node>
+  
+  <node pkg="autocar_tools" type="decision_trace_logger_node" name="decision_trace_logger" output="screen" respawn="true">
+    <param name="db_path" value="$(find autocar_ai)/database/fleet_learning.db" />
+  </node>
+
+  <node pkg="autocar_tools" type="experience_logger_node" name="experience_logger_node" output="screen" respawn="true" />
+
+  <!-- Visualizer Node -->
+  <node pkg="autocar_tools" type="visualizer_node.py" name="visualizer_node" output="screen" respawn="true" />
+
+  <!-- 9. RViz Visualization -->
+  <node if="$(arg use_rviz)" name="rviz" pkg="rviz" type="rviz" required="true"
+        args="-d $(find autocar_description)/rviz/nav.rviz"/>
+</launch>

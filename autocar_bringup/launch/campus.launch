@@ -1,0 +1,14 @@
+<launch>
+  <arg name="local_planner" default="dwa"/>
+  <arg name="use_rl" default="false"/>
+  <arg name="use_rviz" default="true"/>
+  <arg name="gui" default="true"/>
+
+  <include file="$(find autocar_bringup)/launch/full_system.launch">
+    <arg name="world_type" value="campus"/>
+    <arg name="local_planner" value="$(arg local_planner)"/>
+    <arg name="use_rl" value="$(arg use_rl)"/>
+    <arg name="use_rviz" value="$(arg use_rviz)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+</launch>

@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="street_light">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision_post">
+        <pose>0 0 2.5 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.08</radius>
+            <length>5.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual_post">
+        <pose>0 0 2.5 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.08</radius>
+            <length>5.0</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_head">
+        <pose>0.3 0 5.0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.6 0.2 0.15</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/DarkGrey</name>
+          </script>
+        </material>
+      </visual>
+      <light name="light_source" type="spot">
+        <pose>0.5 0 4.8 0 1.5707 0</pose>
+        <diffuse>0.8 0.8 0.5 1</diffuse>
+        <specular>0.2 0.2 0.2 1</specular>
+        <attenuation>
+          <range>15</range>
+          <constant>0.5</constant>
+          <linear>0.05</linear>
+          <quadratic>0.01</quadratic>
+        </attenuation>
+        <direction>0 0 -1</direction>
+        <spot>
+          <inner_angle>0.3</inner_angle>
+          <outer_angle>0.8</outer_angle>
+          <falloff>1.0</falloff>
+        </spot>
+        <cast_shadows>true</cast_shadows>
+      </light>
+    </link>
+  </model>
+</sdf>

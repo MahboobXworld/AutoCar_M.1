@@ -1,0 +1,60 @@
+scenarios:
+  - id: 1
+    name: "Main Gate to Library"
+    start_pose: {x: -370.0, y: 0.0, z: 0.2, yaw: 0.0}
+    goal_pose: {x: 120.0, y: 15.0, z: 0.2, yaw: 1.5707}
+    description: "Navigate from the main campus entrance gate, along the main road, and stop in front of the Library."
+
+  - id: 2
+    name: "Hostel to Cafeteria"
+    start_pose: {x: 280.0, y: 30.0, z: 0.2, yaw: -1.5707}
+    goal_pose: {x: -120.0, y: -15.0, z: 0.2, yaw: -1.5707}
+    description: "Travel from the Student Hostel Area, navigate through the roundabout, and arrive at the Cafeteria drop-off zone."
+
+  - id: 3
+    name: "Parking Lot to Academic Block"
+    start_pose: {x: -150.0, y: 25.0, z: 0.2, yaw: 0.0}
+    goal_pose: {x: -120.0, y: 15.0, z: 0.2, yaw: 1.5707}
+    description: "Exit the parking lot area, join the main internal road, and park near Academic Block A."
+
+  - id: 4
+    name: "Bus Stop to Auditorium"
+    start_pose: {x: -280.0, y: 10.0, z: 0.2, yaw: 0.0}
+    goal_pose: {x: 120.0, y: -15.0, z: 0.2, yaw: -1.5707}
+    description: "Pick up passengers at the bus stop, traverse the roundabout, and drop them off in front of the Auditorium."
+
+  - id: 5
+    name: "Laboratory to Administration Building"
+    start_pose: {x: -240.0, y: -15.0, z: 0.2, yaw: 1.5707}
+    goal_pose: {x: 0.0, y: 15.0, z: 0.2, yaw: 1.5707}
+    description: "Depart from the Laboratory building, merge onto the main road, and park at the Administrative Building VIP parking space."
+
+  - id: 6
+    name: "Emergency Route"
+    start_pose: {x: -240.0, y: -200.0, z: 0.2, yaw: 0.0}
+    goal_pose: {x: -370.0, y: 0.0, z: 0.2, yaw: 3.1415}
+    description: "Simulate an emergency transport scenario from the south Laboratories service road back to the security gate checkpoint."
+
+  - id: 7
+    name: "Campus Delivery Route"
+    start_pose: {x: 350.0, y: 110.0, z: 0.2, yaw: 3.1415}
+    goal_pose: {x: -350.0, y: 110.0, z: 0.2, yaw: 3.1415}
+    description: "Run a delivery mission along the long North road connector spanning east-to-west."
+
+  - id: 8
+    name: "Autonomous Shuttle Route"
+    start_pose: {x: -370.0, y: 0.0, z: 0.2, yaw: 0.0}
+    goal_pose: {x: 350.0, y: 0.0, z: 0.2, yaw: 0.0}
+    description: "Run the full length of the internal campus main road passing straight through the central roundabout."
+
+  - id: 9
+    name: "Night Navigation"
+    start_pose: {x: -120.0, y: -90.0, z: 0.2, yaw: 0.0}
+    goal_pose: {x: 280.0, y: 150.0, z: 0.2, yaw: 1.5707}
+    description: "Test navigation under low lighting, moving from the Cafeteria to the Student Hostels."
+
+  - id: 10
+    name: "Rainy Weather Navigation"
+    start_pose: {x: 0.0, y: 90.0, z: 0.2, yaw: -1.5707}
+    goal_pose: {x: 120.0, y: 90.0, z: 0.2, yaw: 0.0}
+    description: "Perform tight maneuver control in rainy conditions, traveling between the Admin building and the Library."

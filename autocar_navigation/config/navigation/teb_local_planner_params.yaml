@@ -1,0 +1,67 @@
+TebLocalPlannerROS:
+
+  odom_topic: /odometry/filtered
+  map_frame: map
+
+  # Trajectory Configuration
+  teb_autosize: True
+  dt_ref: 0.3
+  dt_hysteresis: 0.03
+  global_plan_overwrite_orientation: True
+  max_global_plan_lookahead_dist: 3.0
+  feasibility_check_no_poses: 5
+
+  # Robot Configuration (Kinematics-based limits)
+  max_vel_x: 0.8
+  max_vel_x_backwards: 0.2
+  max_vel_theta: 1.14 # w_max = v_max / R_min = 0.8 / 0.70 = 1.14 rad/s
+  acc_lim_x: 0.8 # reduced from 2.5 to prevent wheel slip and localization loss
+  acc_lim_theta: 1.2 # reduced from 3.2 to prevent rotation slippage
+
+  # Ackermann Kinematics Parameters
+  min_turning_radius: 0.70 # Wheelbase (0.70m) / tan(max_steer_angle 45 deg) = 0.70m
+  wheelbase: 0.70
+  cmd_angle_instead_of_rotvel: false # Let ackermann_controller convert angular velocity to steering
+
+  # Goal Tolerance
+  xy_goal_tolerance: 0.2
+  yaw_goal_tolerance: 0.15
+  free_goal_vel: False
+
+  # Obstacle Avoidance
+  min_obstacle_dist: 0.40
+  include_costmap_obstacles: True
+  costmap_obstacles_behind_robot_dist: 1.0
+  obstacle_poses_affected: 30
+  costmap_converter_plugin: ""
+  costmap_converter_spin_thread: True
+  costmap_converter_rate: 5
+
+  # Optimization Parameters
+  no_inner_iterations: 5
+  no_outer_iterations: 4
+  optimization_activate: True
+  optimization_verbose: False
+  penalty_epsilon: 0.1
+  weight_max_vel_x: 2
+  weight_max_vel_theta: 1
+  weight_acc_lim_x: 1
+  weight_acc_lim_theta: 1
+  weight_kinematics_nh: 1000 # Enforce non-holonomic constraint
+  weight_kinematics_forward_drive: 1
+  weight_kinematics_turning_radius: 1000 # Enforce minimum turning radius strictly!
+  weight_optimaltime: 1
+  weight_obstacle: 50
+
+  # Homotopy Class Planner (for obstacle avoidance exploration)
+  enable_homotopy_class_planning: True
+  enable_multithreading: True
+  simple_exploration: False
+  max_number_classes: 4
+  roadmap_graph_no_samples: 15
+  roadmap_graph_area_width: 5
+  h_signature_prescreeing_factor: 0.1
+  h_signature_threshold: 0.1
+  obstacle_keypoint_offset: 0.1
+  obstacle_heading_threshold: 0.45
+  visualize_hc_graph: False

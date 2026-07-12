@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>autocar_description</name>
+  <version>0.0.0</version>
+  <description>URDF, meshes, and RViz configs for autocar</description>
+  <maintainer email="architect@autocar.com">Robotics Architect</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+</package>

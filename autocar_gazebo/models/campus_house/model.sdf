@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="campus_house">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <pose>0 0 6 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 12 12</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual_body">
+        <pose>0 0 6 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 12 12</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Yellow</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="visual_roof">
+        <pose>0 0 12.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>21 13 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Red</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

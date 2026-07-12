@@ -1,0 +1,35 @@
+<launch>
+  <arg name="local_planner" default="dwa"/> <!-- dwa or teb -->
+
+  <!-- 1. Move Base (Navigation) -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find autocar_navigation)/config/navigation/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find autocar_navigation)/config/navigation/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find autocar_navigation)/config/navigation/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find autocar_navigation)/config/navigation/global_costmap_params.yaml" command="load" />
+    
+    <rosparam if="$(eval arg('local_planner') == 'dwa')" file="$(find autocar_navigation)/config/navigation/dwa_local_planner_params.yaml" command="load" />
+    <rosparam if="$(eval arg('local_planner') == 'teb')" file="$(find autocar_navigation)/config/navigation/teb_local_planner_params.yaml" command="load" />
+
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" if="$(eval arg('local_planner') == 'dwa')"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" if="$(eval arg('local_planner') == 'teb')"/>
+
+    <param name="GlobalPlanner/orientation_mode" value="3" />
+    <param name="GlobalPlanner/orientation_window_size" value="10" />
+    <param name="GlobalPlanner/use_dijkstra" value="true" />
+    <param name="GlobalPlanner/use_grid_path" value="false" />
+
+    <remap from="cmd_vel" to="/cmd_vel_raw"/>
+    <remap from="odom" to="/odometry/filtered"/>
+  </node>
+
+  <!-- 2. Safety Supervisor (Collision Avoidance & Estop) -->
+  <node pkg="autocar_navigation" type="safety_supervisor_node.py" name="safety_supervisor" output="screen" respawn="true">
+    <param name="db_path" value="$(find autocar_ai)/database/fleet_learning.db" />
+    <param name="wheelbase" value="0.70" />
+    <param name="max_steer_angle" value="0.785398" />
+    <param name="bubble_base_radius" value="0.65" />
+    <param name="bubble_speed_coef" value="0.45" />
+  </node>
+</launch>

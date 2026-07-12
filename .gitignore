@@ -1,0 +1,14 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# SQLite files
+*.db
+*.db-journal
+autocar_ai/database/fleet_learning.db
+autocar_ai/database/fleet/
+autocar_ai/database/fleet_learning.db-journal
+
+# Build/log files
+.pytest_cache/
+*.log

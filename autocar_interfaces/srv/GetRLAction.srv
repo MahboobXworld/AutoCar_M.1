@@ -1,0 +1,5 @@
+float64[] state_vector
+---
+uint8 action
+float64 confidence
+uint8[] alternative_actions

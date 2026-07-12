@@ -1,0 +1,4 @@
+<launch>
+  <!-- Semantic World Model Node -->
+  <node pkg="autocar_perception" type="semantic_world_model_node.py" name="semantic_world_model_node" output="screen" respawn="true" />
+</launch>

@@ -1,0 +1,19 @@
+<launch>
+  <!-- Toggle reinforcement learning vs baseline decision tree -->
+  <arg name="use_rl" default="false"/>
+
+  <!-- 1. Start Policy Inference Server (Python Node) if RL is used -->
+  <node if="$(arg use_rl)" name="policy_inference_node" pkg="autocar_ai" type="policy_inference_node.py" output="screen" respawn="true" />
+
+  <!-- 2. Start Behavior Decision Manager (C++ Node) -->
+  <node name="behavior_decision_manager_node" pkg="autocar_behavior" type="behavior_decision_manager_node" output="screen" respawn="true">
+    <param name="use_rl" value="$(arg use_rl)" />
+    <remap from="navigate_behavior" to="navigate_behavior_bdm" />
+  </node>
+
+  <!-- 3. Start Intelligent Path Alignment & Maneuver Planner (Python Node) -->
+  <node name="path_alignment_planner_node" pkg="autocar_maneuver_planner" type="path_alignment_planner_node.py" output="screen" respawn="true" />
+
+  <!-- 3. Start Experience Logger (C++ Node) -->
+  <node name="experience_logger_node" pkg="autocar_tools" type="experience_logger_node" output="screen" respawn="true" />
+</launch>

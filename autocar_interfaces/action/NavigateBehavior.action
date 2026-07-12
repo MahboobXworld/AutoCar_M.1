@@ -1,0 +1,11 @@
+# Goal definition
+geometry_msgs/PoseStamped target_goal
+---
+# Result definition
+bool success
+string message
+---
+# Feedback definition
+string current_behavior
+float64 distance_to_goal
+float64 heading_error

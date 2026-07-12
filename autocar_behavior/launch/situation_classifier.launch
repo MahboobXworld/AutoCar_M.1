@@ -1,0 +1,7 @@
+<launch>
+  <arg name="publish_rate" default="10.0"/>
+
+  <node pkg="autocar_behavior" type="situation_classifier_node.py" name="situation_classifier_node" output="screen">
+    <param name="publish_rate" value="$(arg publish_rate)"/>
+  </node>
+</launch>

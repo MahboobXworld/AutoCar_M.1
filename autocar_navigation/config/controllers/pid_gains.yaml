@@ -1,0 +1,6 @@
+# gazebo_ros_control:
+#   pid_gains:
+#     front_left_wheel_joint:  {p: 15.0, i: 1.0, d: 0.05}
+#     front_right_wheel_joint: {p: 15.0, i: 1.0, d: 0.05}
+#     rear_left_wheel_joint:   {p: 15.0, i: 1.0, d: 0.05}
+#     rear_right_wheel_joint:  {p: 15.0, i: 1.0, d: 0.05}

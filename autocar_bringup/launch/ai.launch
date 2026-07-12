@@ -1,0 +1,12 @@
+<launch>
+  <arg name="use_rl" default="false"/>
+
+  <!-- 1. Policy Inference Server (Python Node) -->
+  <node if="$(arg use_rl)" name="policy_inference_node" pkg="autocar_ai" type="policy_inference_node.py" output="screen" respawn="true" />
+
+  <!-- 2. Online Learning Node -->
+  <node name="online_learning_node" pkg="autocar_ai" type="online_learning_node.py" output="screen" respawn="true" />
+
+  <!-- 3. Fleet Synchronization Daemon -->
+  <node name="fleet_sync_daemon" pkg="autocar_ai" type="fleet_sync_daemon.py" output="screen" respawn="true" />
+</launch>

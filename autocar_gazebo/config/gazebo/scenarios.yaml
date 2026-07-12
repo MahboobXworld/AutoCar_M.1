@@ -1,0 +1,184 @@
+scenarios:
+  - id: straight_corridor_1
+    name: "Standard Straight Corridor"
+    situation: "Straight Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [8.0, 0.0, 0.0]
+    max_steps: 100
+    min_clearance: 0.8
+
+  - id: straight_corridor_2
+    name: "Long Corridor with Offset"
+    situation: "Straight Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [12.0, 0.5, 0.0]
+    max_steps: 150
+    min_clearance: 0.7
+
+  - id: narrow_passage_1
+    name: "Tight Rack Lane"
+    situation: "Narrow Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [6.0, 0.0, 0.0]
+    max_steps: 120
+    min_clearance: 0.45
+
+  - id: narrow_passage_2
+    name: "Corridor with Corner Transition"
+    situation: "Narrow Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [5.0, 3.0, 1.57]
+    max_steps: 180
+    min_clearance: 0.4
+
+  - id: loading_dock_1
+    name: "Bay 4 Precise Approach"
+    situation: "Loading Dock"
+    start_pose: [4.0, 1.0, 0.0]
+    goal_pose: [5.0, 0.0, -1.57]
+    max_steps: 100
+    min_clearance: 0.35
+
+  - id: loading_dock_2
+    name: "Pallet Retrieval Alignment"
+    situation: "Pallet Pickup"
+    start_pose: [3.0, 2.0, 3.14]
+    goal_pose: [1.0, 2.0, 3.14]
+    max_steps: 80
+    min_clearance: 0.3
+
+  - id: reverse_parking_1
+    name: "Docking Reverse Entrance"
+    situation: "Reverse Parking"
+    start_pose: [1.0, 0.0, 0.0]
+    goal_pose: [0.0, 0.0, 3.14]
+    max_steps: 120
+    min_clearance: 0.4
+
+  - id: reverse_parking_2
+    name: "Angle Parking Bay B"
+    situation: "Reverse Parking"
+    start_pose: [2.0, 1.0, 0.0]
+    goal_pose: [0.5, 0.0, 2.35]
+    max_steps: 140
+    min_clearance: 0.38
+
+  - id: dead_end_1
+    name: "Blocked Bay Retreat"
+    situation: "Dead End"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [-3.0, 0.0, 3.14]
+    max_steps: 100
+    min_clearance: 0.3
+
+  - id: dead_end_2
+    name: "Forklift Alley Obstruction"
+    situation: "Blocked Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [-4.0, 1.0, 2.8]
+    max_steps: 150
+    min_clearance: 0.35
+
+  - id: dynamic_obstacle_1
+    name: "Moving Forklift Crossing"
+    situation: "Dynamic Obstacle Ahead"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [7.0, 0.0, 0.0]
+    max_steps: 120
+    min_clearance: 0.4
+
+  - id: dynamic_obstacle_2
+    name: "Pedestrian Corridor Avoidance"
+    situation: "Dynamic Obstacle Ahead"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [8.0, 2.0, 0.0]
+    max_steps: 160
+    min_clearance: 0.5
+
+  - id: parallel_parking
+    name: "Parallel Parking"
+    situation: "Reverse Parking"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [-2.0, -1.0, 0.0]
+    max_steps: 150
+    min_clearance: 0.35
+
+  - id: reverse_docking
+    name: "Reverse Docking"
+    situation: "Loading Dock"
+    start_pose: [2.0, 2.0, 0.0]
+    goal_pose: [0.0, 0.0, 3.14]
+    max_steps: 180
+    min_clearance: 0.3
+
+  - id: blocked_loading_dock
+    name: "Blocked Loading Dock"
+    situation: "Dead End"
+    start_pose: [3.0, 0.0, 0.0]
+    goal_pose: [1.0, 0.0, 0.0]
+    max_steps: 100
+    min_clearance: 0.25
+
+  - id: tight_pallet_pickup
+    name: "Tight Pallet Pickup"
+    situation: "Pallet Pickup"
+    start_pose: [1.5, 0.5, 0.0]
+    goal_pose: [0.0, 0.0, 0.0]
+    max_steps: 120
+    min_clearance: 0.2
+
+  - id: dynamic_human_crossing
+    name: "Dynamic Human Crossing"
+    situation: "Dynamic Obstacle Ahead"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [6.0, 0.0, 0.0]
+    max_steps: 120
+    min_clearance: 0.45
+
+  - id: moving_forklift
+    name: "Moving Forklift"
+    situation: "Dynamic Obstacle Ahead"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [7.0, 1.0, 0.0]
+    max_steps: 140
+    min_clearance: 0.4
+
+  - id: multiple_robots
+    name: "Multiple Robots"
+    situation: "Dynamic Obstacle Ahead"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [5.0, 0.0, 0.0]
+    max_steps: 120
+    min_clearance: 0.4
+
+  - id: traffic_intersection
+    name: "Traffic Intersection"
+    situation: "Wide Open Area"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [4.0, 4.0, 1.57]
+    max_steps: 150
+    min_clearance: 0.5
+
+  - id: emergency_stop
+    name: "Emergency Stop"
+    situation: "Dynamic Obstacle Ahead"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [4.0, 0.0, 0.0]
+    max_steps: 60
+    min_clearance: 0.2
+
+  - id: narrow_warehouse
+    name: "Narrow Warehouse"
+    situation: "Narrow Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [10.0, 0.0, 0.0]
+    max_steps: 200
+    min_clearance: 0.35
+
+  - id: maze_navigation
+    name: "Maze Navigation"
+    situation: "Narrow Corridor"
+    start_pose: [0.0, 0.0, 0.0]
+    goal_pose: [6.0, 6.0, 0.0]
+    max_steps: 250
+    min_clearance: 0.3
