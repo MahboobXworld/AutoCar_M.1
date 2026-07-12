@@ -56,7 +56,7 @@
   </node>
 
   <!-- 4. LiDAR Deskewing Node -->
-  <node pkg="autocar_localization" type="lidar_deskew_node.py" name="lidar_deskew_node" output="screen" respawn="true" />
+  <node pkg="autocar_localization" type="lidar_deskew_node" name="lidar_deskew_node" output="screen" respawn="true" />
 
   <!-- 5. Hector Mapping -->
   <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">

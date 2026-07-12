@@ -4,3 +4,12 @@ find_package(catkin REQUIRED COMPONENTS roscpp std_msgs geometry_msgs nav_msgs s
 catkin_package(
   CATKIN_DEPENDS roscpp std_msgs geometry_msgs nav_msgs sensor_msgs amcl map_server hector_mapping robot_localization autocar_interfaces
 )
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
+
+add_executable(lidar_deskew_node src/lidar_deskew_node.cpp)
+target_link_libraries(lidar_deskew_node
+  ${catkin_LIBRARIES}
+)
