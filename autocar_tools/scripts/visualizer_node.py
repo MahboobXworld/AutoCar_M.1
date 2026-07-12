@@ -2,7 +2,7 @@
 import rospy
 import numpy as np
 from nav_msgs.msg import Path
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, PoseStamped
 from autocar_interfaces.msg import ManeuverSequence, SemanticWorldModel
 from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import String
@@ -20,6 +20,8 @@ class VisualizerNode:
         self.sub_maneuver = rospy.Subscriber('/maneuver_sequence', ManeuverSequence, self.maneuver_callback)
         self.sub_world_model = rospy.Subscriber('/semantic_world_model', SemanticWorldModel, self.world_model_callback)
         self.sub_mission = rospy.Subscriber('/mission_status', String, self.mission_callback)
+        self.sub_goal_rviz = rospy.Subscriber('/move_base_simple/goal', PoseStamped, self.goal_callback)
+        self.sub_goal_current = rospy.Subscriber('/move_base/current_goal', PoseStamped, self.goal_callback)
         self.sub_global_plan = rospy.Subscriber('/move_base/GlobalPlanner/plan', Path, self.global_plan_callback)
 
         # Publishers
@@ -29,14 +31,18 @@ class VisualizerNode:
 
         # Cache variables
         self.current_mission_status = "Waiting for mission..."
+        self.latest_goal = None
 
         rospy.loginfo("[Visualizer] RViz Visualizer Node initialized.")
+
+    def goal_callback(self, msg):
+        self.latest_goal = msg
 
     def global_plan_callback(self, msg):
         if not msg.poses:
             return
 
-        # Get the final pose of the plan (the goal)
+        # Get the final pose of the plan (the goal fallback)
         goal_pose = msg.poses[-1]
 
         marker = Marker()
@@ -47,9 +53,13 @@ class VisualizerNode:
         marker.type = Marker.CUBE
         marker.action = Marker.ADD
 
-        # Same pose as the last point in the path (the goal)
-        marker.pose.position = goal_pose.pose.position
-        marker.pose.orientation = goal_pose.pose.orientation
+        # Use exact goal position & orientation if available, otherwise fallback to path end
+        if self.latest_goal is not None:
+            marker.pose.position = self.latest_goal.pose.position
+            marker.pose.orientation = self.latest_goal.pose.orientation
+        else:
+            marker.pose.position = goal_pose.pose.position
+            marker.pose.orientation = goal_pose.pose.orientation
 
         # Parking slot dimensions (meters)
         marker.scale.x = 1.25      # Length
@@ -66,7 +76,7 @@ class VisualizerNode:
         marker.lifetime = rospy.Duration(0)
 
         self.pub_parking_spot.publish(marker)
-        rospy.loginfo("Parking spot marker published (path detected)")
+        rospy.loginfo("Parking spot marker published (path detected, exact direction aligned)")
 
     def mission_callback(self, msg):
         self.current_mission_status = msg.data
