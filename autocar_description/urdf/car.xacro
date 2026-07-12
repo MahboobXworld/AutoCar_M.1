@@ -181,7 +181,7 @@
     <origin xyz="0.35 0.40 ${wheel_radius}" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-0.785" upper="0.785" effort="80.0" velocity="4.0"/>
-    <dynamics damping="0.5" friction="0.1"/>
+    <dynamics damping="3.0" friction="0.8"/>
   </joint>
 
   <!-- Front Right Steering Knuckle -->
@@ -206,7 +206,7 @@
     <origin xyz="0.35 -0.40 ${wheel_radius}" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit lower="-0.785" upper="0.785" effort="80.0" velocity="4.0"/>
-    <dynamics damping="0.5" friction="0.1"/>
+    <dynamics damping="3.0" friction="0.8"/>
   </joint>
 
   <!-- ===================== -->
@@ -331,7 +331,7 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/> 
     <limit effort="100.0" velocity="15.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="1.5" friction="0.5"/>
   </joint>
 
   <!-- Front Right Wheel (attached to steering knuckle) -->
@@ -341,7 +341,7 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/> 
     <limit effort="100.0" velocity="15.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="1.5" friction="0.5"/>
   </joint>
 
   <!-- Rear Left Wheel (fixed steering, connected to base_link) -->
@@ -351,7 +351,7 @@
     <origin xyz="-0.35 0.40 ${wheel_radius}" rpy="0 0 0"/>
     <axis xyz="0 1 0"/> 
     <limit effort="100.0" velocity="15.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="1.5" friction="0.5"/>
   </joint>
 
   <!-- Rear Right Wheel (fixed steering, connected to base_link) -->
@@ -361,7 +361,7 @@
     <origin xyz="-0.35 -0.40 ${wheel_radius}" rpy="0 0 0"/>
     <axis xyz="0 1 0"/> 
     <limit effort="100.0" velocity="15.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="1.5" friction="0.5"/>
   </joint>
 
   <!-- ===================== -->

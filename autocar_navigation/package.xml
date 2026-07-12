@@ -17,4 +17,5 @@
   <depend>dwa_local_planner</depend>
   <depend>teb_local_planner</depend>
   <depend>autocar_interfaces</depend>
+  <depend>controller_manager_msgs</depend>
 </package>

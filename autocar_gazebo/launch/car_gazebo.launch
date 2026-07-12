@@ -50,7 +50,12 @@
         respawn="false" output="screen" />
 
   <!-- Ackerman steering control mapper & odometry publisher -->
-  <node name="ackermann_controller" pkg="autocar_navigation" type="ackermann_controller" output="screen" />
+  <node name="ackermann_controller" pkg="autocar_navigation" type="ackermann_controller" output="screen">
+    <remap from="/cmd_vel" to="/cmd_vel_to_controller"/>
+  </node>
+
+  <!-- Goal Stop Manager -->
+  <node name="goal_stop_manager" pkg="autocar_navigation" type="goal_stop_manager" output="screen" respawn="true" />
 
   <!-- 4. Start RViz -->
   <!-- <node pkg="rviz" type="rviz" name="rviz" required="true"
