@@ -10,7 +10,7 @@ The navigation pipeline intercepts user navigation goals using the **Path Alignm
 ```mermaid
 graph TD
     User[RViz / User Goal] -->|NavigateBehaviorAction| PAP[Path Alignment & Maneuver Planner]
-    PAP -->|NavigateBehaviorAction (BDM)| BDM[Behavior Decision Manager]
+    PAP -->|NavigateBehaviorAction BDM| BDM[Behavior Decision Manager]
     BDM -->|Goal Pose| MoveBase[move_base Planner]
     BDM -->|/behavior_state| ExpLogger[Experience Logger]
     BDM -->|/behavior_state| PerfLogger[Mission Performance Logger]
