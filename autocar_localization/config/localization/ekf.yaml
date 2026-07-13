@@ -16,7 +16,7 @@ odom0: /diff_drive_controller/odom_filtered
 odom0_config: [false, false, false,
                false, false, false,
                true,  false, false,
-               false, false, true,
+               false, false, false,
                false, false, false]
 odom0_differential: false
 odom0_relative: false

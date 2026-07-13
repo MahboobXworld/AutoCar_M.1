@@ -22,10 +22,19 @@
 
     <remap from="cmd_vel" to="/cmd_vel_raw"/>
     <remap from="odom" to="/odometry/filtered"/>
+    
+    <!-- Recovery Behaviors for Ackermann (no rotate_recovery) -->
+    <rosparam param="recovery_behaviors">
+      - name: 'conservative_reset'
+        type: 'clear_costmap_recovery/ClearCostmapRecovery'
+      - name: 'aggressive_reset'
+        type: 'clear_costmap_recovery/ClearCostmapRecovery'
+    </rosparam>
   </node>
 
   <!-- 2. Safety Supervisor (Collision Avoidance & Estop) -->
   <node pkg="autocar_navigation" type="safety_supervisor_node.py" name="safety_supervisor" output="screen" respawn="true">
+    <param name="cmd_raw_topic" value="/cmd_vel_raw_behavior" />
     <param name="db_path" value="$(find autocar_ai)/database/fleet_learning.db" />
     <param name="wheelbase" value="0.70" />
     <param name="max_steer_angle" value="0.785398" />

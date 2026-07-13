@@ -14,4 +14,11 @@
 
   <!-- 3. Mission Manager -->
   <node pkg="autocar_behavior" type="mission_manager.py" name="mission_manager" output="screen" respawn="true" />
+
+  <!-- 4. Dynamic Obstacle Prediction and Behavior Planner -->
+  <node pkg="autocar_behavior" type="dynamic_obstacle_planner_node.py" name="dynamic_obstacle_planner" output="screen" respawn="true">
+    <param name="db_path" value="$(find autocar_ai)/database/fleet_learning.db" />
+    <param name="wheelbase" value="0.70" />
+    <param name="max_steer_angle" value="0.785398" />
+  </node>
 </launch>

@@ -29,12 +29,12 @@ class SituationClassifierNode:
         self.behavior_state = None
 
         # Subscribers
-        self.sub_scan = rospy.subscribe('/scan', LaserScan, self.scan_callback)
-        self.sub_path = rospy.subscribe('/move_base/GlobalPlanner/plan', Path, self.path_callback)
-        self.sub_local_costmap = rospy.subscribe('/move_base/local_costmap/costmap', OccupancyGrid, self.local_costmap_callback)
-        self.sub_global_costmap = rospy.subscribe('/move_base/global_costmap/costmap', OccupancyGrid, self.global_costmap_callback)
-        self.sub_odom = rospy.subscribe('/diff_drive_controller/odom', Odometry, self.odom_callback)
-        self.sub_behavior = rospy.subscribe('/behavior_state', BehaviorState, self.behavior_callback)
+        self.sub_scan = rospy.Subscriber('/scan', LaserScan, self.scan_callback)
+        self.sub_path = rospy.Subscriber('/move_base/GlobalPlanner/plan', Path, self.path_callback)
+        self.sub_local_costmap = rospy.Subscriber('/move_base/local_costmap/costmap', OccupancyGrid, self.local_costmap_callback)
+        self.sub_global_costmap = rospy.Subscriber('/move_base/global_costmap/costmap', OccupancyGrid, self.global_costmap_callback)
+        self.sub_odom = rospy.Subscriber('/diff_drive_controller/odom', Odometry, self.odom_callback)
+        self.sub_behavior = rospy.Subscriber('/behavior_state', BehaviorState, self.behavior_callback)
 
         # Publisher
         self.pub_situation = rospy.Publisher('/navigation_situation', Situation, queue_size=10)
@@ -162,18 +162,18 @@ class SituationClassifierNode:
         if dist_to_goal < 1.8 and abs(heading_err) > 2.0 and vx < 0.05:
             situation = "Reverse Parking"
             confidence = 0.92
-        # Check Loading Dock, Pallet Pickup/Drop based on goal proximity and posture
+        # Check Loading Dock, Tight Approach/Goal Docking based on goal proximity and posture
         elif dist_to_goal < 0.6 and abs(heading_err) < 0.15:
             situation = "Tight Goal Alignment"
             confidence = 0.95
         elif dist_to_goal < 1.2:
-            # Decide between Pallet Pickup, Pallet Drop, or Loading Dock depending on posture
+            # Decide between Tight Approach or Goal Docking depending on posture
             # If front/rear clearances are very tight
             if front_c < 0.5 or rear_c < 0.5:
-                situation = "Pallet Pickup"
+                situation = "Tight Approach"
                 confidence = 0.85
             else:
-                situation = "Loading Dock"
+                situation = "Goal Docking"
                 confidence = 0.88
         # Goal Behind Robot
         elif abs(heading_err) > 2.2:

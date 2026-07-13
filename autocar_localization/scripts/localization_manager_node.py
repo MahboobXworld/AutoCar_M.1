@@ -225,14 +225,9 @@ class LocalizationManagerNode:
         self.pub_marker.publish(marker)
 
     def detect_wheel_slip(self):
-        if not self.wheel_odom or not self.imu_data or not self.ekf_odom:
+        if not self.wheel_odom or not self.ekf_odom:
             self.slip_detected = False
             return
-
-        # Compare wheel odometry angular velocity against IMU yaw rate
-        wheel_w = self.wheel_odom.twist.twist.angular.z
-        imu_w = self.imu_data.angular_velocity.z
-        w_diff = abs(wheel_w - imu_w)
 
         # Compare wheel speed against EKF speed
         wheel_v = self.wheel_odom.twist.twist.linear.x
@@ -240,9 +235,9 @@ class LocalizationManagerNode:
         v_diff = abs(wheel_v - ekf_v)
 
         # Flag slip if large discrepancy occurs during non-trivial movement
-        if (w_diff > 0.35 and abs(wheel_v) > 0.05) or (v_diff > 0.4 and abs(wheel_v) > 0.1):
+        if v_diff > 0.4 and abs(wheel_v) > 0.15:
             if not self.slip_detected:
-                rospy.logwarn(f"[LocalizationManager] Wheel slip detected! Yaw rate diff: {w_diff:.3f} rad/s, Speed diff: {v_diff:.3f} m/s")
+                rospy.logwarn(f"[LocalizationManager] Wheel slip detected! Speed diff: {v_diff:.3f} m/s")
             self.slip_detected = True
         else:
             self.slip_detected = False

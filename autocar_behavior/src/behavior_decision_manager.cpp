@@ -165,6 +165,8 @@ void BehaviorDecisionManager::executeCB(const autocar_interfaces::NavigateBehavi
     
     bool completed = false;
     geometry_msgs::PoseStamped active_goal = goal->target_goal;
+    last_sent_action_ = BehaviorAction::STOP;
+    last_sent_goal_ = geometry_msgs::PoseStamped();
 
     while (ros::ok() && as_.isActive()) {
         if (as_.isPreemptRequested()) {
@@ -279,7 +281,20 @@ void BehaviorDecisionManager::executeCB(const autocar_interfaces::NavigateBehavi
                 mb_goal.target_pose.pose.position.y = current_pose_.pose.position.y - 1.0 * std::sin(yaw);
             }
 
-            move_base_client_.sendGoal(mb_goal);
+            // Check if goal or action has changed to avoid spamming move_base at 10Hz
+            double dx = mb_goal.target_pose.pose.position.x - last_sent_goal_.pose.position.x;
+            double dy = mb_goal.target_pose.pose.position.y - last_sent_goal_.pose.position.y;
+            double dist_err = std::sqrt(dx * dx + dy * dy);
+            
+            double d_yaw = tf2::getYaw(mb_goal.target_pose.pose.orientation) - tf2::getYaw(last_sent_goal_.pose.orientation);
+            while (d_yaw > M_PI) d_yaw -= 2.0 * M_PI;
+            while (d_yaw < -M_PI) d_yaw += 2.0 * M_PI;
+            
+            if (action != last_sent_action_ || dist_err > 0.1 || std::abs(d_yaw) > 0.05) {
+                move_base_client_.sendGoal(mb_goal);
+                last_sent_action_ = action;
+                last_sent_goal_ = mb_goal.target_pose;
+            }
         }
 
         rate.sleep();

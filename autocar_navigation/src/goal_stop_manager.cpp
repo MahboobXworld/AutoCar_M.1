@@ -24,10 +24,10 @@ public:
         ros::NodeHandle private_nh("~");
 
         // Load parameters
-        private_nh.param<double>("goal_dist_tolerance", goal_dist_tolerance_, 0.20); // meters
-        private_nh.param<double>("goal_yaw_tolerance", goal_yaw_tolerance_, 0.15);   // radians (approx 8.6 degrees)
-        private_nh.param<double>("vel_stop_threshold", vel_stop_threshold_, 0.05);   // m/s
-        private_nh.param<double>("drift_tolerance", drift_tolerance_, 0.25);         // meters
+        private_nh.param<double>("goal_dist_tolerance", goal_dist_tolerance_, 0.35); // meters
+        private_nh.param<double>("goal_yaw_tolerance", goal_yaw_tolerance_, 0.25);   // radians
+        private_nh.param<double>("vel_stop_threshold", vel_stop_threshold_, 0.15);   // m/s
+        private_nh.param<double>("drift_tolerance", drift_tolerance_, 0.35);         // meters
         private_nh.param<double>("hold_delay", hold_delay_, 1.0);                   // seconds before disabling controllers
 
         // Subscribers

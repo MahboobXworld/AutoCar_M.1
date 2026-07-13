@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded: ~
       Splitter Ratio: 0.43529412150382996
-    Tree Height: 553
+    Tree Height: 386
   - Class: rviz/ToolProperties
     Name: Tool Properties
   - Class: rviz/Views
@@ -13,6 +13,9 @@ Panels:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
+  - Class: rviz_plugin_tutorials/Teleop
+    Name: Teleop
+    Topic: /cmd_vel
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -38,6 +41,23 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: odom
       Value: true
+    - Class: rviz/TF
+      Enabled: false
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      Marker Alpha: 1
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -222,19 +242,19 @@ Visualization Manager:
       Unreliable: false
       Value: false
     - Class: rviz/Marker
-      Enabled: true
+      Enabled: false
       Marker Topic: /localization/health_marker
       Name: Health Status Marker
       Namespaces:
-        localization_health: true
+        {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/Marker
       Enabled: true
       Marker Topic: /parking_spot_marker
       Name: Parking_spot
       Namespaces:
-        {}
+        parking_spot: true
       Queue Size: 100
       Value: true
     - Alpha: 0.699999988079071
@@ -329,95 +349,6 @@ Visualization Manager:
       Unreliable: false
       Use Timestamp: false
       Value: true
-    - Class: rviz/TF
-      Enabled: true
-      Filter (blacklist): ""
-      Filter (whitelist): ""
-      Frame Timeout: 15
-      Frames:
-        All Enabled: true
-        base_link:
-          Value: true
-        chassis_body_link:
-          Value: true
-        front_camera_link:
-          Value: true
-        front_camera_optical_link:
-          Value: true
-        front_left_steering_link:
-          Value: true
-        front_left_wheel:
-          Value: true
-        front_left_wheel_alloy:
-          Value: true
-        front_right_steering_link:
-          Value: true
-        front_right_wheel:
-          Value: true
-        front_right_wheel_alloy:
-          Value: true
-        imu_link:
-          Value: true
-        lidar_link:
-          Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
-        rear_camera_link:
-          Value: true
-        rear_camera_optical_link:
-          Value: true
-        rear_left_wheel:
-          Value: true
-        rear_left_wheel_alloy:
-          Value: true
-        rear_right_wheel:
-          Value: true
-        rear_right_wheel_alloy:
-          Value: true
-        scanmatcher_frame:
-          Value: true
-      Marker Alpha: 1
-      Marker Scale: 1
-      Name: TF
-      Show Arrows: true
-      Show Axes: true
-      Show Names: false
-      Tree:
-        map:
-          odom:
-            base_link:
-              chassis_body_link:
-                {}
-              front_camera_link:
-                front_camera_optical_link:
-                  {}
-              front_left_steering_link:
-                front_left_wheel:
-                  front_left_wheel_alloy:
-                    {}
-              front_right_steering_link:
-                front_right_wheel:
-                  front_right_wheel_alloy:
-                    {}
-              imu_link:
-                {}
-              lidar_link:
-                {}
-              rear_camera_link:
-                rear_camera_optical_link:
-                  {}
-              rear_left_wheel:
-                rear_left_wheel_alloy:
-                  {}
-              rear_right_wheel:
-                rear_right_wheel_alloy:
-                  {}
-          scanmatcher_frame:
-            {}
-      Update Interval: 0
-      Value: true
     - Class: rviz/Image
       Enabled: false
       Image Topic: /front_camera/image_raw
@@ -454,40 +385,36 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rviz/XYOrbit
-      Distance: 15.21646499633789
+      Angle: 0
+      Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
-      Field of View: 0.7853981852531433
-      Focal Point:
-        X: 0.878584623336792
-        Y: 0.7161977291107178
-        Z: 0
-      Focal Shape Fixed Size: false
-      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.1297967433929443
+      Scale: 56.32224655151367
       Target Frame: base_link
-      Yaw: 4.658568382263184
+      X: -0.7131180763244629
+      Y: -3.102656364440918
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
+    collapsed: true
   Height: 704
-  Hide Left Dock: false
+  Hide Left Dock: true
   Hide Right Dock: true
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000002000000000000017300000266fc0200000003fc0000003d00000266000000c900fffffffa000000010100000002fb0000000c00430061006d00650072006102000000000000001b00000556000002e5fb000000100044006900730070006c0061007900730100000000000001730000015600fffffffb0000001e0054006f006f006c002000500072006f0070006500720074006900650073000000015d000000700000006e00fffffffb0000000a0049006d006100670065000000010c000001970000001600ffffff00000001000001a800000266fc0200000001fb0000000a00560069006500770073000000003d00000266000000a400ffffff000003dd0000026600000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000002000000000000017300000266fc0200000004fc0000003d000001bf0000000000fffffffa000000000100000002fb0000000c00430061006d00650072006102000000000000001b00000556000002e5fb000000100044006900730070006c0061007900730000000000000001730000015600fffffffb0000001e0054006f006f006c002000500072006f0070006500720074006900650073000000015d000000700000006e00fffffffb0000000a0049006d006100670065000000010c000001970000001600fffffffb0000000c00540065006c0065006f00700000000202000000a10000004700ffffff00000001000001a800000266fc0200000001fb0000000a00560069006500770073000000003d00000266000000a400ffffff000002ab0000026600000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Teleop:
+    collapsed: true
   Tool Properties:
     collapsed: false
   Views:
     collapsed: true
-  Width: 1366
+  Width: 683
   X: 0
   Y: 27

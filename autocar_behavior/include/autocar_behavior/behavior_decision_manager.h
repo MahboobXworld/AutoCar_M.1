@@ -64,6 +64,8 @@ private:
     double amcl_covariance_norm_{0.0};
     int recovery_counter_{0};
     BehaviorAction last_action_{BehaviorAction::STOP};
+    BehaviorAction last_sent_action_{BehaviorAction::STOP};
+    geometry_msgs::PoseStamped last_sent_goal_;
     bool use_rl_{false};
     double confidence_threshold_{0.4};
 };
