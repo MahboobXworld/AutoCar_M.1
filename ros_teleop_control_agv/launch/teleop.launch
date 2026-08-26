@@ -1,0 +1,19 @@
+<!--
+==============================================================================
+Mahboob alam 
+Robotics and AI engineer 
+ma.mahboob2002@gmail.com
+india
+Copyright (c) 2026 Mahboob alam. All rights reserved.
+==============================================================================
+-->
+<launch>
+
+  <!-- ====== Teleoperation receiver node with GUI server ===== -->
+  <node pkg="ros_teleop_control_agv"
+        type="teleop_node.py"
+        name="teleop_receiver"
+        output="screen"
+        launch-prefix="xterm -hold -e" />
+
+</launch>

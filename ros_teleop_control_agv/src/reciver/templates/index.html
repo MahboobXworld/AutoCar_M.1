@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+  ==============================================================================
+  Mahboob alam 
+  Robotics and AI engineer 
+  ma.mahboob2002@gmail.com
+  india
+  Copyright (c) 2026 Mahboob alam. All rights reserved.
+  ==============================================================================
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AGV Remote Control Hub</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: rgba(20, 30, 55, 0.4);
+      --border-color: rgba(0, 191, 255, 0.15);
+      --accent-color: #00bfff;
+      --accent-glow: rgba(0, 191, 255, 0.4);
+      --danger-color: #ff3b30;
+      --danger-glow: rgba(255, 59, 48, 0.4);
+      --success-color: #34c759;
+      --success-glow: rgba(52, 199, 89, 0.4);
+      --text-color: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      fill: var(--accent-color);
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(0, 0, 0, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--danger-color);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--danger-glow);
+    }
+
+    .status-dot.connected {
+      background-color: var(--success-color);
+      box-shadow: 0 0 10px var(--success-glow);
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    main {
+      flex: 1;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      justify-content: space-between;
+    }
+
+    /* Grid of top controls / indicators */
+    .top-panel {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    /* Dashboard Gauges */
+    .dashboard-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+      justify-items: center;
+    }
+    .gauge-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      width: 100%;
+    }
+    .gauge-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .steer-dial-svg {
+      width: 64px;
+      height: 64px;
+    }
+    .dial-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.05);
+      stroke-width: 4;
+    }
+    .dial-arc {
+      fill: none;
+      stroke: rgba(0, 191, 255, 0.2);
+      stroke-width: 4;
+    }
+    .dial-needle {
+      stroke: var(--accent-color);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      transform-origin: 50px 50px;
+      transition: transform 0.05s ease-out;
+    }
+    .dial-center {
+      fill: #fff;
+    }
+    .gauge-value {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .throttle-bar-container {
+      width: 14px;
+      height: 64px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .throttle-bar-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to top, #0077ff, #00bfff);
+      position: absolute;
+      bottom: 50%;
+      left: 0;
+      transition: height 0.05s ease-out, bottom 0.05s ease-out, background 0.05s ease-out;
+    }
+
+    /* Telemetry Info */
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+
+    .telemetry-label {
+      color: var(--text-muted);
+    }
+
+    .telemetry-value {
+      font-weight: 700;
+      color: var(--accent-color);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Toggles Control Panel */
+    .controls-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+    }
+
+    .toggle-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Toggle switch design */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: .3s;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #fff;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent-color);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    input:checked + #manual-slider {
+      background-color: var(--danger-color);
+    }
+
+    /* Drive & Lift Section */
+    .drive-section {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 10px;
+      gap: 20px;
+    }
+
+    /* Joystick Area */
+    .joystick-outer {
+      flex: 1.2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    #joystick-container {
+      width: 216px;
+      height: 216px;
+      background: radial-gradient(circle, rgba(16, 24, 48, 0.6) 0%, rgba(8, 12, 24, 0.8) 100%);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      position: relative;
+      touch-action: none;
+      box-shadow: 0 0 35px rgba(0, 191, 255, 0.1), inset 0 0 25px rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #joystick-handle {
+      width: 72px;
+      height: 72px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.4) 100%), linear-gradient(135deg, #00bfff 0%, #0077ff 100%);
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 6px 18px rgba(0, 191, 255, 0.4), 0 0 10px rgba(0, 119, 255, 0.5), inset 0 2px 4px rgba(255,255,255,0.3);
+      cursor: grab;
+      transition: transform 0.05s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .joystick-crosshair-x {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: rgba(0, 191, 255, 0.12);
+      left: 0;
+      top: 50%;
+      pointer-events: none;
+    }
+    .joystick-crosshair-y {
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      background: rgba(0, 191, 255, 0.12);
+      top: 0;
+      left: 50%;
+      pointer-events: none;
+    }
+    .joystick-ring-mid {
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      border: 1px dashed rgba(0, 191, 255, 0.15);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .handle-target-dot {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #fff;
+    }
+
+    /* Lift Area */
+    .lift-outer {
+      flex: 0.8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lift-btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 90px;
+    }
+
+    .lift-btn {
+      height: 60px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.1s ease;
+      touch-action: none;
+    }
+
+    .lift-btn:active {
+      background: var(--accent-color);
+      color: #000;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 15px var(--accent-glow);
+      transform: scale(0.96);
+    }
+
+    .lift-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+
+
+    /* Warning Overlay for Manual Override */
+    #manual-overlay {
+      display: none !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #manual-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-card {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid var(--danger-color);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 280px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 59, 48, 0.15);
+    }
+
+    .warning-icon {
+      width: 48px;
+      height: 48px;
+      fill: var(--danger-color);
+      margin-bottom: 12px;
+      animation: pulse-warn 1s infinite alternate;
+    }
+
+    @keyframes pulse-warn {
+      0% { transform: scale(0.95); filter: drop-shadow(0 0 2px rgba(255,59,48,0.4)); }
+      100% { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(255,59,48,0.8)); }
+    }
+
+    .warning-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--danger-color);
+    }
+
+    .warning-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+
+    .overlay-btn {
+      background: var(--danger-color);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px var(--danger-glow);
+      cursor: pointer;
+    }
+
+    .disabled-controls {
+      pointer-events: none;
+      opacity: 0.3;
+      filter: grayscale(85%);
+      transition: all 0.3s ease;
+    }
+
+    /* PWA Login Screen Overlay */
+    #login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease;
+    }
+    
+    .login-container-card {
+      background: rgba(20, 30, 55, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 30px;
+      width: 90%;
+      max-width: 340px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 30px rgba(0, 191, 255, 0.15);
+      text-align: center;
+    }
+    
+    .login-logo {
+      width: 50px;
+      height: 50px;
+      fill: var(--accent-color);
+      filter: drop-shadow(0 0 10px var(--accent-glow));
+      margin-bottom: 15px;
+    }
+    
+    .login-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .login-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+    
+    .login-form-group {
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    
+    .login-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+    
+    .login-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    .login-input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 12px var(--accent-glow);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00bfff 0%, #0077ff 100%);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+    
+    .login-error-msg {
+      color: var(--danger-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Custom speed slider styling */
+    #speed-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      transition: background 0.3s;
+      margin-top: 4px;
+    }
+    #speed-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      box-shadow: 0 0 10px var(--accent-glow);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    #speed-slider::-webkit-slider-thumb:active {
+      transform: scale(1.3);
+    }
+
+    #fullscreen-btn:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      color: var(--accent-color) !important;
+    }
+
+    @media (orientation: landscape) and (max-height: 520px) {
+      body {
+        overflow: hidden;
+        height: 100vh;
+      }
+      header {
+        padding: 6px 16px;
+      }
+      main {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr; /* Left col for telemetry, Right col for controls */
+        grid-template-rows: auto 1fr; /* Top row for panels, Bottom row for controls */
+        gap: 12px;
+        padding: 8px 12px;
+        height: calc(100vh - 42px);
+        overflow: hidden;
+      }
+      
+      /* Make .drive-section display: contents so its children are direct grid items */
+      .drive-section {
+        display: contents !important;
+      }
+
+      /* Place Telemetry on Top Left (Column 1, Row 1) */
+      .top-panel {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        margin: 0 !important;
+      }
+
+      /* Place Controls Card on Top Right (Column 2, Row 1) */
+      #controls-card {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        margin: 0 !important;
+      }
+
+      /* Place the Joystick on Bottom (Column 1 and 2, Row 2) */
+      .joystick-outer {
+        grid-column: 1 / span 2 !important;
+        grid-row: 2 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        height: 100% !important;
+        margin: 0 !important;
+      }
+
+      /* Make elements compact to fit the screen */
+      .glass-card {
+        padding: 8px 12px;
+        border-radius: 12px;
+      }
+      .card-title {
+        margin-bottom: 4px;
+        font-size: 0.7rem;
+      }
+      .telemetry-row {
+        margin-bottom: 3px;
+        font-size: 0.8rem;
+      }
+      .toggle-row {
+        padding: 4px 0;
+      }
+      #joystick-container {
+        width: 155px;
+        height: 155px;
+      }
+      #joystick-handle {
+        width: 52px;
+        height: 52px;
+      }
+      .lift-btn {
+        height: 48px;
+        flex: 1;
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <svg class="logo-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-dasharray="3,3" fill="none" stroke-width="1.5"/>
+        <path d="M12 2 L12 22 M2 12 L22 12" stroke="currentColor" stroke-width="1"/>
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+      </svg>
+      <h1>AGV Control</h1>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button id="fullscreen-btn" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-color); padding: 8px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;" onclick="toggleFullscreen()" title="Toggle Fullscreen">
+        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+          <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M21 16v3a2 2 0 0 1-2 2h-3"/>
+        </svg>
+      </button>
+      <button id="header-manual-btn" style="display: none !important; background: var(--danger-color); border: none; color: #fff; font-weight: 700; padding: 6px 12px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 10px var(--danger-glow);" onclick="toggleManualState()">STOPPED</button>
+      <div class="connection-status">
+        <div id="status-indicator" class="status-dot"></div>
+        <span id="status-text">DISCONNECTED</span>
+      </div>
+    </div>
+  </header>
+
+  <main style="position: relative;">
+    <!-- Overrides Overlay -->
+    <div id="manual-overlay">
+      <div class="overlay-card">
+        <svg class="warning-icon" viewBox="0 0 24 24" style="fill: none; stroke: var(--danger-color); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; width: 48px; height: 48px; margin-bottom: 12px;">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <div class="warning-title">Manual Stop Engaged</div>
+        <div class="warning-desc">The physical stop switch or remote manual lock is active. Control is disabled.</div>
+        <button class="overlay-btn" style="background: var(--success-color); color: #000; box-shadow: 0 4px 15px var(--success-glow);" onclick="releaseManualOverride()">Release to Remote Mode</button>
+      </div>
+    </div>
+
+    <!-- Top info cards -->
+    <div class="top-panel">
+      <!-- Telemetry status instrument panel -->
+      <div class="glass-card dashboard-panel">
+        <!-- Stats details -->
+        <div style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+          <div class="card-title" style="margin-bottom: 4px;">Cockpit</div>
+          <div class="telemetry-row" style="display: none !important; margin-bottom: 4px;">
+            <span class="telemetry-label">Mode:</span>
+            <span id="display-mode-label" style="font-weight: 700; color: var(--danger-color);">MANUAL</span>
+          </div>
+          <div class="telemetry-row" style="margin-bottom: 4px;">
+            <span class="telemetry-label">V Limit:</span>
+            <span id="display-max-speed" class="telemetry-value">20.0</span>
+          </div>
+          <div style="display: none;">
+            <span id="display-throttle">0.0</span>
+            <span id="display-steering">0.0</span>
+          </div>
+        </div>
+
+        <!-- Steer Dial Gauge -->
+        <div class="gauge-container">
+          <div class="gauge-title">Steer</div>
+          <svg class="steer-dial-svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" class="dial-bg" />
+            <!-- Tick marks -->
+            <line x1="50" y1="5" x2="50" y2="10" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+            <line x1="18" y1="18" x2="22" y2="22" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+            <line x1="82" y1="18" x2="78" y2="22" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+            <line x1="5" y1="50" x2="10" y2="50" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+            <line x1="95" y1="50" x2="90" y2="50" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+            <line x1="50" y1="50" x2="50" y2="12" class="dial-needle" id="dial-needle" />
+            <circle cx="50" cy="50" r="5" class="dial-center" />
+          </svg>
+          <div id="dial-val" class="gauge-value">0.0°</div>
+        </div>
+
+        <!-- Throttle Meter Gauge -->
+        <div class="gauge-container">
+          <div class="gauge-title">Throttle</div>
+          <div class="throttle-bar-container">
+            <div class="throttle-bar-fill" id="throttle-bar-fill"></div>
+          </div>
+          <div id="throttle-val" class="gauge-value">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle options -->
+    <div class="glass-card" id="controls-card">
+      <div class="controls-grid">
+        <div class="toggle-row" style="display: flex; flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <span class="toggle-label">Max Drive Speed</span>
+            <span id="speed-slider-val" style="color: var(--accent-color); font-weight: 700; font-size: 0.9rem;">20.0</span>
+          </div>
+          <input type="range" id="speed-slider" min="0" max="50" value="20" step="1" oninput="updateMaxSpeed(this.value)">
+        </div>
+        <div class="toggle-row" style="display: none !important; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 10px; display: flex; flex-direction: column; align-items: stretch; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <span class="toggle-label" style="color: var(--text-color);">Manual Override Status</span>
+            <span id="mode-badge" style="background: rgba(255, 59, 48, 0.2); color: var(--danger-color); border: 1px solid var(--danger-color); padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">MANUAL</span>
+          </div>
+          <button id="auto-mode-btn" style="background: var(--success-color); box-shadow: 0 4px 15px var(--success-glow); width: 100%; border: none; padding: 12px; border-radius: 12px; font-weight: 700; color: #000; font-size: 0.9rem; cursor: pointer; transition: all 0.15s ease;" onclick="releaseManualOverride()">SWITCH TO REMOTE MODE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Driving joystick -->
+    <div class="drive-section" id="drive-controls-container">
+      <div class="joystick-outer">
+        <div id="joystick-container">
+          <div class="joystick-crosshair-x"></div>
+          <div class="joystick-crosshair-y"></div>
+          <div class="joystick-ring-mid"></div>
+          <div id="joystick-handle">
+            <div class="handle-target-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PWA Login Screen Overlay -->
+  <div id="login-overlay">
+    <div class="login-container-card">
+      <svg class="login-logo" viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: none; stroke: var(--accent-color); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 15px; display: inline-block;">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        <circle cx="12" cy="16" r="1"/>
+        <path d="M12 17v2"/>
+      </svg>
+      <div class="login-title">Control Hub Login</div>
+      <div class="login-subtitle">Authenticate to access robot teleoperation</div>
+      
+      <div class="login-form-group">
+        <label class="login-label">Username</label>
+        <input type="text" id="username" class="login-input" placeholder="Enter username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+      </div>
+      
+      <div class="login-form-group">
+        <label class="login-label">Password</label>
+        <input type="password" id="password" class="login-input" placeholder="Enter password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false">
+      </div>
+      
+      <button class="login-btn" onclick="attemptLogin()">AUTHENTICATE</button>
+      <div id="login-error" class="login-error-msg">Invalid username or password.</div>
+    </div>
+  </div>
+
+  <script>
+    // State storage (manual switch is initially True/Stopped)
+    let throttleValue = 0.0;
+    let steeringValue = 0.0;
+    let manualSwitch = false;
+    let maxSpeed = 20.0;
+
+    let isConnected = false;
+    let currentAbortController = null;
+
+    function updateMaxSpeed(val) {
+      maxSpeed = parseFloat(val);
+      const sliderVal = document.getElementById('speed-slider-val');
+      if (sliderVal) sliderVal.innerText = maxSpeed.toFixed(1);
+      const displayMaxSpeed = document.getElementById('display-max-speed');
+      if (displayMaxSpeed) displayMaxSpeed.innerText = maxSpeed.toFixed(1);
+    }
+
+    // Element bindings
+    const statusDot = document.getElementById('status-indicator');
+    const statusText = document.getElementById('status-text');
+    const manualOverlay = document.getElementById('manual-overlay');
+
+    // Joystick logic
+    const container = document.getElementById('joystick-container');
+    const handle = document.getElementById('joystick-handle');
+    let startX = 0, startY = 0;
+    let isDragging = false;
+    let maxRadius = 72; // dynamic drag boundary radius
+
+    function updateMaxRadius() {
+      const rect = container.getBoundingClientRect();
+      const handleRect = handle.getBoundingClientRect();
+      if (rect.width && handleRect.width) {
+        maxRadius = (rect.width - handleRect.width) / 2;
+      }
+    }
+
+    // Recalculate on load and window resize to handle orientation shifts
+    window.addEventListener('resize', updateMaxRadius);
+    document.addEventListener('DOMContentLoaded', updateMaxRadius);
+    // Double check on orientation change
+    window.addEventListener('orientationchange', () => {
+      setTimeout(updateMaxRadius, 200);
+    });
+
+    function handleStart(e) {
+      isDragging = true;
+      updateMaxRadius(); // ensure fresh layout bounds
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const rect = container.getBoundingClientRect();
+      startX = rect.left + rect.width / 2;
+      startY = rect.top + rect.height / 2;
+      handleMove(e);
+    }
+
+    function handleMove(e) {
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      let dx = clientX - startX;
+      let dy = clientY - startY;
+
+      // Decouple control value mapping from circular visual clamping.
+      // We clamp control inputs to [-maxRadius, maxRadius] independently to allow full speed and full steer.
+      const ctrlX = Math.max(-maxRadius, Math.min(maxRadius, dx));
+      const ctrlY = Math.max(-maxRadius, Math.min(maxRadius, dy));
+
+      // Clamp the visual handle to the circular boundary
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance > maxRadius) {
+        dx = (dx / distance) * maxRadius;
+        dy = (dy / distance) * maxRadius;
+      }
+
+      handle.style.transform = `translate(${dx}px, ${dy}px)`;
+
+      // Map Y to throttle: -maxSpeed (backward) to maxSpeed (forward)
+      throttleValue = -(ctrlY / maxRadius) * maxSpeed;
+      // Map X to steering: -45.0 (left) to 45.0 (right), centered at 0
+      steeringValue = (ctrlX / maxRadius) * 45.0;
+
+      updateGauges(throttleValue, steeringValue);
+    }
+
+    function handleEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      handle.style.transform = `translate(0px, 0px)`;
+      throttleValue = 0.0;
+      steeringValue = 0.0;
+      updateGauges(0.0, 0.0);
+    }
+
+    container.addEventListener('touchstart', handleStart, { passive: false });
+    container.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
+    container.addEventListener('mousedown', handleStart);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    // Keyboard driving controls
+    const activeKeys = {};
+    let keyboardActive = false;
+
+    window.addEventListener('keydown', (e) => {
+      // Avoid taking focus when user is typing in the login fields
+      if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+        return;
+      }
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'].includes(e.key)) {
+        activeKeys[e.key.toLowerCase()] = true;
+        keyboardActive = true;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'].includes(e.key)) {
+        activeKeys[e.key.toLowerCase()] = false;
+      }
+    });
+
+    // Dashboard gauges helper function
+    function updateGauges(thr, steer) {
+      // Update text values
+      const displayThrottle = document.getElementById('display-throttle');
+      const displaySteering = document.getElementById('display-steering');
+      if (displayThrottle) displayThrottle.innerText = thr.toFixed(1);
+      if (displaySteering) displaySteering.innerText = steer.toFixed(1);
+
+      // Update throttle progress bar
+      const fillEl = document.getElementById('throttle-bar-fill');
+      const throttleValEl = document.getElementById('throttle-val');
+      if (fillEl && throttleValEl) {
+        const throttlePercent = (thr / maxSpeed) * 50; // percentage from center
+        throttleValEl.innerText = Math.round(thr / maxSpeed * 100) + '%';
+        if (throttlePercent >= 0) {
+          fillEl.style.bottom = '50%';
+          fillEl.style.height = `${throttlePercent}%`;
+          fillEl.style.background = 'linear-gradient(to top, #0077ff, #00bfff)';
+        } else {
+          fillEl.style.bottom = `${50 + throttlePercent}%`;
+          fillEl.style.height = `${Math.abs(throttlePercent)}%`;
+          fillEl.style.background = 'linear-gradient(to bottom, #ff7700, #ff3b30)';
+        }
+      }
+
+      // Update steering dial needle
+      const needleEl = document.getElementById('dial-needle');
+      const dialValEl = document.getElementById('dial-val');
+      if (needleEl && dialValEl) {
+        needleEl.style.transform = `rotate(${steer}deg)`;
+        dialValEl.innerText = steer.toFixed(1) + '°';
+      }
+    }
+
+    // Keyboard physics update loop (runs at 60Hz/FPS via requestAnimationFrame)
+    function updateKeyboardPhysics() {
+      // If user is dragging the virtual joystick, touch control takes precedence
+      if (isDragging) {
+        // Reset keyboard states so it doesn't fight touch once touch ends
+        keyboardActive = false;
+        requestAnimationFrame(updateKeyboardPhysics);
+        return;
+      }
+
+      // Check if any keyboard driving key is pressed
+      const isUp = activeKeys['arrowup'] || activeKeys['w'];
+      const isDown = activeKeys['arrowdown'] || activeKeys['s'];
+      const isLeft = activeKeys['arrowleft'] || activeKeys['a'];
+      const isRight = activeKeys['arrowright'] || activeKeys['d'];
+
+      let changed = false;
+
+      // 1. Throttle physics (W/S or Up/Down)
+      const throttleRampRate = maxSpeed * 0.05; // takes ~20 frames to reach max
+      const throttleDecayRate = maxSpeed * 0.10; // decays faster when released
+
+      if (isUp && !isDown) {
+        throttleValue = Math.min(maxSpeed, throttleValue + throttleRampRate);
+        changed = true;
+      } else if (isDown && !isUp) {
+        throttleValue = Math.max(-maxSpeed, throttleValue - throttleRampRate);
+        changed = true;
+      } else {
+        // Return to center
+        if (throttleValue > 0.0) {
+          throttleValue = Math.max(0.0, throttleValue - throttleDecayRate);
+          changed = true;
+        } else if (throttleValue < 0.0) {
+          throttleValue = Math.min(0.0, throttleValue + throttleDecayRate);
+          changed = true;
+        }
+      }
+
+      // 2. Steering physics (A/D or Left/Right)
+      const maxSteerOffset = 45.0; // limit left/right steering range relative to 0
+      const targetSteerLeft = -maxSteerOffset; // -45.0
+      const targetSteerRight = maxSteerOffset; // 45.0
+      const steerRampRate = maxSteerOffset * 0.08; // smooth turn
+      const steerDecayRate = maxSteerOffset * 0.15; // snaps back faster
+
+      if (isLeft && !isRight) {
+        steeringValue = Math.max(targetSteerLeft, steeringValue - steerRampRate);
+        changed = true;
+      } else if (isRight && !isLeft) {
+        steeringValue = Math.min(targetSteerRight, steeringValue + steerRampRate);
+        changed = true;
+      } else {
+        // Snap back to 0.0
+        if (steeringValue > 0.0) {
+          steeringValue = Math.max(0.0, steeringValue - steerDecayRate);
+          changed = true;
+        } else if (steeringValue < 0.0) {
+          steeringValue = Math.min(0.0, steeringValue + steerDecayRate);
+          changed = true;
+        }
+      }
+
+      // 3. Visual feedback & UI Updates
+      if (changed || keyboardActive) {
+        // Map current values to virtual joystick offset
+        const dx = (steeringValue / maxSteerOffset) * maxRadius;
+        const dy = -(throttleValue / maxSpeed) * maxRadius;
+        handle.style.transform = `translate(${dx}px, ${dy}px)`;
+
+        updateGauges(throttleValue, steeringValue);
+        
+        // Reset keyboard active state once everything is centered
+        if (!isUp && !isDown && !isLeft && !isRight && throttleValue === 0.0 && steeringValue === 0.0) {
+          keyboardActive = false;
+        }
+      }
+
+      requestAnimationFrame(updateKeyboardPhysics);
+    }
+
+    // Start loop
+    requestAnimationFrame(updateKeyboardPhysics);
+
+
+
+    // API settings handlers
+
+    function releaseManualOverride() {
+      manualSwitch = false;
+      sendControlLoop(true);
+    }
+
+    function engageManualOverride() {
+      manualSwitch = true;
+      sendControlLoop(true);
+    }
+
+    function toggleManualState() {
+      if (manualSwitch) {
+        releaseManualOverride();
+      } else {
+        engageManualOverride();
+      }
+    }
+
+    // High frequency REST loop
+    function sendControlLoop(force = false) {
+      // Stop sending if the client is not authenticated yet
+      if (sessionStorage.getItem('authenticated') !== 'true') {
+        return;
+      }
+
+      // Force zero commands if manual override is engaged (nothing works, no data goes to robot)
+      const activeThrottle = manualSwitch ? 0.0 : throttleValue;
+      const activeSteering = manualSwitch ? 0.0 : steeringValue;
+
+      // Package details
+      const payload = {
+        session_token: sessionStorage.getItem('session_token'),
+        operation_details: {
+          throttle: parseFloat(activeThrottle.toFixed(2)),
+          steering: parseFloat(activeSteering.toFixed(2))
+        }
+      };
+
+      // Only include state toggles when explicitly forced by user action
+      if (force) {
+        payload.manual_switch = manualSwitch;
+      }
+
+      // Abort previous pending fetch to prevent queue accumulation
+      if (currentAbortController) {
+        currentAbortController.abort();
+      }
+      currentAbortController = new AbortController();
+      const signal = currentAbortController.signal;
+
+      fetch('/bot/updateoperation/CL-00001/LOC-00000001/BOT-000001', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: signal
+      })
+      .then(res => {
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            return res.json().then(data => {
+              sessionStorage.removeItem('authenticated');
+              sessionStorage.removeItem('session_token');
+              checkAuthentication();
+              const err = document.getElementById('login-error');
+              err.style.display = 'block';
+              err.innerText = data.message || "Session terminated.";
+              throw new Error("unauthorized");
+            });
+          }
+          throw new Error("http_error");
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!isConnected) {
+          isConnected = true;
+          statusDot.classList.add('connected');
+          statusText.innerText = "CONNECTED";
+        }
+        updateTelemetryView(data);
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') return; // ignored
+        if (err.message === "unauthorized") return;
+        if (isConnected) {
+          isConnected = false;
+          statusDot.classList.remove('connected');
+          statusText.innerText = "DISCONNECTED";
+        }
+      });
+    }
+
+    function updateTelemetryView(data) {
+      // 1. Set Manual switch state and Mode Selection button
+      if (data.manual_switch !== undefined) {
+        manualSwitch = data.manual_switch;
+        const autoBtn = document.getElementById('auto-mode-btn');
+        const modeBadge = document.getElementById('mode-badge');
+        const controlsContainer = document.getElementById('drive-controls-container');
+        const headerManualBtn = document.getElementById('header-manual-btn');
+        
+        if (manualSwitch) {
+          manualOverlay.classList.add('active');
+          if (controlsContainer) controlsContainer.classList.add('disabled-controls');
+          
+          if (headerManualBtn) {
+            headerManualBtn.innerText = "STOPPED";
+            headerManualBtn.style.background = "var(--danger-color)";
+            headerManualBtn.style.boxShadow = "0 0 10px var(--danger-glow)";
+          }
+          
+          modeBadge.innerText = "MANUAL";
+          modeBadge.style.color = "var(--danger-color)";
+          modeBadge.style.borderColor = "var(--danger-color)";
+          modeBadge.style.background = "rgba(255, 59, 48, 0.2)";
+          
+          const modeLabel = document.getElementById('display-mode-label');
+          if (modeLabel) {
+            modeLabel.innerText = "MANUAL";
+            modeLabel.style.color = "var(--danger-color)";
+          }
+
+          autoBtn.innerText = "SWITCH TO REMOTE MODE";
+          autoBtn.style.background = "var(--success-color)";
+          autoBtn.style.color = "#000";
+          autoBtn.style.boxShadow = "0 4px 15px var(--success-glow)";
+          autoBtn.onclick = releaseManualOverride;
+        } else {
+          manualOverlay.classList.remove('active');
+          if (controlsContainer) controlsContainer.classList.remove('disabled-controls');
+          
+          if (headerManualBtn) {
+            headerManualBtn.innerText = "RUNNING";
+            headerManualBtn.style.background = "var(--success-color)";
+            headerManualBtn.style.boxShadow = "0 0 10px var(--success-glow)";
+          }
+          
+          modeBadge.innerText = "REMOTE";
+          modeBadge.style.color = "var(--success-color)";
+          modeBadge.style.borderColor = "var(--success-color)";
+          modeBadge.style.background = "rgba(52, 199, 89, 0.2)";
+          
+          const modeLabel = document.getElementById('display-mode-label');
+          if (modeLabel) {
+            modeLabel.innerText = "REMOTE";
+            modeLabel.style.color = "var(--success-color)";
+          }
+
+          autoBtn.innerText = "ENGAGE MANUAL STOP";
+          autoBtn.style.background = "var(--danger-color)";
+          autoBtn.style.color = "#fff";
+          autoBtn.style.boxShadow = "0 4px 15px var(--danger-glow)";
+          autoBtn.onclick = engageManualOverride;
+        }
+      }
+
+      // Safety status updates disabled
+
+    }
+
+    // Persistent Device Identification
+    let deviceUuid = localStorage.getItem('device_uuid');
+    if (!deviceUuid) {
+      deviceUuid = 'dev-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem('device_uuid', deviceUuid);
+    }
+
+    // PWA Session Authentication Check
+    function checkAuthentication() {
+      if (sessionStorage.getItem('authenticated') === 'true') {
+        document.getElementById('login-overlay').style.display = 'none';
+      } else {
+        document.getElementById('login-overlay').style.display = 'flex';
+      }
+    }
+
+    async function attemptLogin() {
+      const user = document.getElementById('username').value.trim().toLowerCase();
+      const pass = document.getElementById('password').value.trim();
+      const err = document.getElementById('login-error');
+
+      if (!user || !pass) {
+        err.style.display = 'block';
+        err.innerText = "Please fill in all authentication fields.";
+        return;
+      }
+
+      try {
+        const response = await fetch('/bot/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: user,
+            password: pass,
+            device_uuid: deviceUuid
+          })
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+          sessionStorage.setItem('authenticated', 'true');
+          sessionStorage.setItem('session_token', data.session_token);
+          err.style.display = 'none';
+          
+          const overlay = document.getElementById('login-overlay');
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 300);
+        } else {
+          err.style.display = 'block';
+          err.innerText = data.message || "Invalid username or password.";
+        }
+      } catch (e) {
+        err.style.display = 'block';
+        err.innerText = "Failed to connect to server.";
+      }
+    }
+
+    // Fullscreen API Helper
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Toggle button icon dynamically on fullscreen status change
+    document.addEventListener('fullscreenchange', () => {
+      const btn = document.getElementById('fullscreen-btn');
+      if (btn) {
+        if (document.fullscreenElement) {
+          // Collapse icon
+          btn.innerHTML = `
+            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;">
+              <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+            </svg>`;
+        } else {
+          // Expand icon
+          btn.innerHTML = `
+            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;">
+              <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+            </svg>`;
+        }
+      }
+    });
+
+    // Call on load
+    sessionStorage.removeItem('authenticated');
+    sessionStorage.removeItem('session_token');
+    checkAuthentication();
+
+    // Run control loop at 10Hz (every 100ms)
+    setInterval(sendControlLoop, 100);
+  </script>
+</body>
+</html>

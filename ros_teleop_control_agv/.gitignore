@@ -1,0 +1,15 @@
+# Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Log files
+*.log
+src/reciver/teleop_connections.log
