@@ -8,7 +8,7 @@ Contains the Gazebo Classic simulation environments, high-fidelity worlds, spawn
   - `spawn_ackermann.launch`: Helper file to spawn the robot model at a specific $(x, y, yaw)$ position.
   - `campus_world.launch`: Specific launcher for the large-scale campus digital twin environment.
 - **`worlds/`**
-  - `warehouse.world`: High-density warehouse obstacle mapping world.
+  - `warehouse.world`: High-density obstacle mapping world.
   - `campus.world`: College campus twin world.
 - **`config/`**
   - `gazebo/`: Contains scenarios configuration YAMLs.

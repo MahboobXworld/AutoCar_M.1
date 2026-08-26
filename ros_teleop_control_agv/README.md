@@ -1,6 +1,6 @@
-# ros_teleop_control_agv
+# AutoCar Teleoperation & Remote Control
 
-A ROS Noetic package for remote AGV (Automated Guided Vehicle) teleoperation via a premium responsive mobile web application. 
+A ROS Noetic package for remote AutoCar teleoperation via a premium responsive mobile web application. 
 
 This package hosts a local Flask web server that serves a mobile-friendly dashboard containing a virtual touch joystick and control overlay, translating touch drag events into real-time command topics published to `/Throttle_Topic` and `/Steering_Topic` on the ROS master.
 
@@ -81,7 +81,7 @@ http://<ROBOT_IP>:3000/
 
 To prevent unauthorized control and safety hazards, the web application incorporates a secure access framework:
 * **Credentials**: Username `admin`, Password `password123`.
-* **Single-Operator Lock**: Only one operator can control the AGV at a time. If a second user attempts to log in or send commands, they are blocked with an HTTP `403 Forbidden` (`busy` status) response.
+* **Single-Operator Lock**: Only one operator can control the AutoCar at a time. If a second user attempts to log in or send commands, they are blocked with an HTTP `403 Forbidden` (`busy` status) response.
 * **Session Watchdog**: If the active operator closes their browser or loses connectivity, the server automatically releases the lock and engages a safe stop after `2.0` seconds of inactivity.
 * **Audit Logging**: All connection activities (successful/failed logins, watchdog timeouts, busy rejections) along with timestamps, client IPs, and device User-Agent details are written to `src/reciver/teleop_connections.log` on the vehicle.
 
@@ -89,7 +89,7 @@ To prevent unauthorized control and safety hazards, the web application incorpor
 
 ## ⚡ Command Slew-Rate Limiting (Ramping)
 
-To protect the AGV's physical steering motors and electrical drivetrains, the ROS node implements a dynamic slew-rate limiting filter:
+To protect the AutoCar's physical steering motors and electrical drivetrains, the ROS node implements a dynamic slew-rate limiting filter:
 - **Throttle**: Ramped at a maximum rate of change of `20.0` units/second.
 - **Steering**: Ramped at a maximum rate of change of `45.0` degrees/second.
 - **Manual Override Stops**: Manual mode activation bypasses the ramping filters, bringing the vehicle to an immediate halt.
@@ -98,7 +98,7 @@ To protect the AGV's physical steering motors and electrical drivetrains, the RO
 
 ## 🎮 Controller Layout & Controls
 
-- **Switch to Remote Mode**: Toggles the AGV between **Manual** mode and **Remote** control mode. Real-time driving commands are ignored unless remote mode is engaged.
+- **Switch to Remote Mode**: Toggles the AutoCar between **Manual** mode and **Remote** control mode. Real-time driving commands are ignored unless remote mode is engaged.
 - **Virtual Joystick**: Drag the blue circle to steer and drive:
   - **Vertical axis**: Controls throttle direction and magnitude.
   - **Horizontal axis**: Controls steering angle.

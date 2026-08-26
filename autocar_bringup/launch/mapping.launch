@@ -1,6 +1,8 @@
 <launch>
   <!-- Launch arguments -->
-  <arg name="world_name" default="$(find autocar_gazebo)/worlds/warehouse.world"/>
+  <arg name="load_dynamic_obstacles" default="false"/>
+  <arg name="world_name" default="$(find autocar_gazebo)/worlds/warehouse.world" if="$(arg load_dynamic_obstacles)"/>
+  <arg name="world_name" default="$(find autocar_gazebo)/worlds/warehouse_clean.world" unless="$(arg load_dynamic_obstacles)"/>
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui" default="true"/>

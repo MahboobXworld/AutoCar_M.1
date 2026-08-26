@@ -1,6 +1,6 @@
 # autocar_bringup
 
-Serves as the unified launch orchestration layer and primary entry point for launching the autonomous Ackermann vehicle system in simulation or physical deployments.
+Serves as the unified launch orchestration layer and primary entry point for launching the AutoCar autonomous Ackermann vehicle system in simulation or physical deployments.
 
 ## 📂 Launch Orchestrators
 - **`full_system.launch`**: Master launcher aggregating all modular launch fragments.
@@ -14,7 +14,7 @@ Serves as the unified launch orchestration layer and primary entry point for lau
 ## 🕹️ Convenience World Launches
 To run the full system in a specific simulated world layout with pre-configured parameters:
 ```bash
-# Launch inside the warehouse world
+# Launch inside the default world
 roslaunch autocar_bringup warehouse.launch
 
 # Launch inside the campus world twin

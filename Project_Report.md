@@ -1,14 +1,14 @@
 # ROS Ackermann Steering Robot: Technical Project Report
 
 ## 1. Executive Summary
-This project details the design, kinematics configuration, physical stabilization, and navigation stack integration of a 4-wheeled Ackermann steering robot (`autocar`) within a Gazebo simulation. The robot features dual-camera visual coverage, a 3D Hokuyo LiDAR, an Xsens IMU, and operates in a high-density warehouse environment. 
+This project details the design, kinematics configuration, physical stabilization, and navigation stack integration of a 4-wheeled Ackermann steering robot (`autocar`) within a Gazebo simulation. The robot features dual-camera visual coverage, a 3D Hokuyo LiDAR, an Xsens IMU, and operates in a high-density testing environment. 
 
 Key challenges resolved during this project:
 1. **Kinematics Transition:** Converted the vehicle control structure from a differential drive approximation to a high-fidelity **C++ Ackermann steering and velocity controller**.
 2. **Left-Right Wheel Rotation Mismatch:** Corrected left-right wheel joint polarities so all wheels spin forward during forward cmd_vel commands, and backward during reverse commands.
 3. **Actuator and Steering Stabilization:** Lowered steering knuckle PID gains and transitioned the drive wheels to direct velocity command tracking, resolving steering jitter and tire runaway issues.
 4. **Orientation and Goal Alignment:** Implemented global path heading smoothing and disabled goal xy latching to prevent Ackermann wiggling/freezing at target goals.
-5. **Multi-Planner Costmap Safety:** Integrated and tuned both DWA and TEB (minimum turning radius constrained) local planners to prevent collisions in narrow warehouse corridors.
+5. **Multi-Planner Costmap Safety:** Integrated and tuned both DWA and TEB (minimum turning radius constrained) local planners to prevent collisions in narrow corridors.
 6. **Workspace Modularization:** Restructured the monolithic package workspace into **11 decoupled ROS packages** adhering to industrial robotics design practices.
 7. **SQLite Database Operational Errors:** Fixed database pathing discrepancies and directory creation permissions across Python and C++ nodes.
 8. **ROS Time Method & Import Type Mismatch:** Resolved Python runtime failures by updating `.toSec()` (C++ only method) calls to `.to_sec()`, and adding dynamic python module search paths.
@@ -82,7 +82,7 @@ To eliminate drift during high-speed maneuvers, sharp turns, and reverse operati
 
 ### Costmap Configuration
 * **Footprint:** Defined as a box `[[-0.6, -0.35], [-0.6, 0.35], [0.6, 0.35], [0.6, -0.35]]` enclosing the chassis.
-* **Safety Inflation:** Set `inflation_radius` in `costmap_common_params.yaml` to **`0.85` meters** and `cost_scaling_factor` to **`10.0`** to maintain a wide safety buffer around warehouse walls.
+* **Safety Inflation:** Set `inflation_radius` in `costmap_common_params.yaml` to **`0.85` meters** and `cost_scaling_factor` to **`10.0`** to maintain a wide safety buffer around testing area walls.
 
 ### Global Path Planning
 * **Path Heading Smoothing:** The global planner (`global_planner/GlobalPlanner`) is configured to use `orientation_mode: 3` (`ForwardThenInterpolate`) and `orientation_window_size: 10`. This ensures that intermediate path points are annotated with orientations pointing forward along the path and transition smoothly to the goal heading at the terminal waypoint, preventing sudden "hooks" or end-of-path rotations.
@@ -169,7 +169,7 @@ The C++ arbitrator implements a safety-critical fallback arbitrator. If `use_rl`
 ---
 
 ## 8. Continuous Autonomous Learning Loop & Fleet Synchronization
-To enable true autonomous self-improvement across the warehouse vehicle fleet, we implemented a complete online continuous learning, automatic policy promotion, and hot-swapping synchronization cycle.
+To enable true autonomous self-improvement across the vehicle fleet, we implemented a complete online continuous learning, automatic policy promotion, and hot-swapping synchronization cycle.
 
 ### Prioritized Replay Buffer Persistence & Warm Start
 To prevent knowledge loss across system reboots, the `online_learning_node.py` queries the SQLite database (`transition_tuples` table) on startup. It automatically restores the latest historical transitions (up to a configurable capacity), reconstructs the Prioritized Replay Buffer, and computes initial Temporal Difference (TD) error priorities. This ensures online reinforcement learning resumes seamlessly from past experiences rather than restarting cold.
@@ -266,5 +266,5 @@ To evaluate the upgraded multi-sensor localization stack, we executed the automa
 ### Technical Analysis & Discussion
 1. **High-Speed Path Accuracy**: During the high-speed straight run, the translation RMSE is maintained at **`0.0831` m** (8.3 cm), showcasing the high accuracy of the motion-compensated point cloud deskewing and Hector mapping scan match inputs.
 2. **Extreme Wheel Slip Isolation**: During the aggressive left and right turn segments, wheel slip values spiked up to **`87.50%`**. The system immediately detected the slip (by comparing wheel encoder output with the IMU yaw rate) and scaled EKF covariance inputs. The EKF successfully isolated the slipping encoders, preventing the robot from accumulating odometric drift.
-3. **Transient Turn Drift**: During the aggressive turns, transient translational errors peaked at `1.47` m, which is a significant improvement over the old AMCL-only baseline where the robot would completely lose localization and clip warehouse walls.
+3. **Transient Turn Drift**: During the aggressive turns, transient translational errors peaked at `1.47` m, which is a significant improvement over the old AMCL-only baseline where the robot would completely lose localization and clip testing area walls.
 4. **Adaptive Safety Limits**: In scenarios with degraded health status (e.g. `Reverse Turn` and `Figure-Eight Segment A` resulting in `Poor` / `Warning` states), the localization manager automatically scaled velocity limits down, giving the particle filter and scan matcher extra time to converge and return the system to `Excellent` health.

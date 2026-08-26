@@ -1,4 +1,4 @@
-# Technical Design & Implementation Report: AGV Remote Teleoperation
+# Technical Design & Implementation Report: AutoCar Remote Teleoperation
 
 This report outlines the technical design, protocols, mapping configurations, and implementation details for the `ros_teleop_control_agv` package. It details how the system achieves low-latency remote command transmission while enforcing authorization and session controls.
 
@@ -6,7 +6,7 @@ This report outlines the technical design, protocols, mapping configurations, an
 
 ## 1. System Overview
 
-The `ros_teleop_control_agv` package implements an end-to-end teleoperation system allowing a web client (e.g., a smartphone connected to the local Wi-Fi network) to drive an Automated Guided Vehicle (AGV) and control its mast lift.
+The `ros_teleop_control_agv` package implements an end-to-end teleoperation system allowing a web client (e.g., a smartphone connected to the local Wi-Fi network) to drive the AutoCar autonomous platform and control its mast lift.
 
 The architecture comprises three main layers:
 1. **PWA User Interface**: A responsive HTML5/CSS/JavaScript web dashboard featuring a virtual touch joystick and real-time telemetry.

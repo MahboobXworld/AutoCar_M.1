@@ -177,7 +177,7 @@ pip3 install torch torchvision onnx pandas matplotlib
 ## 🕹️ How to Run
 
 ### 1. Launch Simulation and Navigation Stack
-Launch the overall system using `autocar_bringup`. This spins up the Gazebo simulation (defaults to the warehouse world), joint state publishers, EKF fusion, scan matcher, AMCL localization, and `move_base`.
+Launch the overall system using `autocar_bringup`. This spins up the Gazebo simulation (defaults to the default world), joint state publishers, EKF fusion, scan matcher, AMCL localization, and `move_base`.
 * **TEB Planner (Recommended for Ackermann constraints):**
   ```bash
   roslaunch autocar_bringup full_system.launch local_planner:=teb
