@@ -24,12 +24,10 @@ The virtual joystick calculates touch coordinate translations relative to the ce
   - Angle $\theta = \operatorname{atan2}(-dy, dx)$
 - **Clipping Boundaries**: The drag boundary is capped at a maximum radius ($R = 72\text{px}$). If $d > R$, coordinates are scaled back onto the circle perimeter.
 - **Drive Vector Mappings**:
-  - **Throttle**: Calculated from the normalized vertical offset. Capped by the `maxSpeed` slider value:
-    $$\text{Throttle Value} = \left(-\frac{dy}{R}\right) \times \text{maxSpeed}$$
+  - **Throttle**: Reaches full throttle (`maxSpeed`) at the outer circular boundary for any driving angle. Includes a smooth 40-degree zero-throttle transition zone (20° above/below horizontal) around the left and right horizontal axes to ensure smooth velocity decay during forward/reverse crossovers.
     *(Range: $[-50.0, 50.0]$)*
-  - **Steering**: Map horizontal deflection to angle degrees where $90^\circ$ is straight, $45^\circ$ is hard left, and $135^\circ$ is hard right:
-    $$\text{Steering Value} = 90.0 + \left(\frac{dx}{R} \times 45.0\right)$$
-    *(Range: $[45.0, 135.0]$)*
+  - **Steering**: Mapped across a 140° top arc (forward driving) and a 140° bottom arc (reverse driving), spanning 70° left and 70° right from center ($90^\circ$ / $-90^\circ$). The output angle is clamped to a maximum range of $-45.0^\circ$ (Hard Left) to $+45.0^\circ$ (Hard Right), centered at $0.0^\circ$.
+    *(Range: $[-45.0, 45.0]$)*
 
 ### B. High-Frequency REST API
 The client browser runs a `setInterval` loop executing at 10Hz (every 100ms), making HTTP `POST` requests to:
@@ -40,7 +38,7 @@ The client browser runs a `setInterval` loop executing at 10Hz (every 100ms), ma
 {
   "operation_details": {
     "throttle": 0.0,
-    "steering": 90.0,
+    "steering": 0.0,
     "mast": 0.0
   },
   "manual_switch": false

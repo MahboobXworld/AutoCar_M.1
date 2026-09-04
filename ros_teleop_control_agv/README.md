@@ -99,9 +99,9 @@ To protect the AutoCar's physical steering motors and electrical drivetrains, th
 ## 🎮 Controller Layout & Controls
 
 - **Switch to Remote Mode**: Toggles the AutoCar between **Manual** mode and **Remote** control mode. Real-time driving commands are ignored unless remote mode is engaged.
-- **Virtual Joystick**: Drag the blue circle to steer and drive:
-  - **Vertical axis**: Controls throttle direction and magnitude.
-  - **Horizontal axis**: Controls steering angle.
+- **Virtual Joystick**: Drag the touch joystick handle to steer and drive:
+  - **Throttle Control**: Reaches full throttle (`maxSpeed`) at the outer joystick edge. Incorporates a smooth 40° horizontal transition zone (20° above/below horizontal on left & right sides) for smooth zero-throttle crossovers.
+  - **Steering Control**: Mapped across a 140° top arc (forward) and a 140° bottom arc (reverse) covering 70° left and 70° right of center, outputting a precise steering angle range from `-45.0°` (Hard Left) to `+45.0°` (Hard Right), centered at `0.0°`.
 - **Max Speed Slider**: Allows limiting the maximum drive speed command (scalable from 0% to 50%, defaults to 20%).
 - **Mast Lift Controls**: Press and hold the up/down arrows to raise or lower the mast.
 

@@ -975,7 +975,6 @@
       // Decouple control value mapping from circular visual clamping.
       // We clamp control inputs to [-maxRadius, maxRadius] independently to allow full speed and full steer.
       const ctrlX = Math.max(-maxRadius, Math.min(maxRadius, dx));
-      const ctrlY = Math.max(-maxRadius, Math.min(maxRadius, dy));
 
       // Clamp the visual handle to the circular boundary
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -986,10 +985,46 @@
 
       handle.style.transform = `translate(${dx}px, ${dy}px)`;
 
-      // Map Y to throttle: -maxSpeed (backward) to maxSpeed (forward)
-      throttleValue = -(ctrlY / maxRadius) * maxSpeed;
-      // Map X to steering: -45.0 (left) to 45.0 (right), centered at 0
-      steeringValue = (ctrlX / maxRadius) * 45.0;
+      // Map Y to throttle: reaches full throttle (maxSpeed) at the circular edge for any steering angle
+      const yMax = Math.max(1.0, Math.sqrt(Math.max(0, maxRadius * maxRadius - ctrlX * ctrlX)));
+      let rawThrottle = Math.max(-1.0, Math.min(1.0, -dy / yMax)) * maxSpeed;
+
+      // Calculate angle, throttle transition, and steering mapping (140° top & 140° bottom arcs, max ±45.0°)
+      if (distance > 0.001) {
+        const angleRad = Math.atan2(-dy, dx);
+        const angleDeg = angleRad * (180.0 / Math.PI);
+        const absAngle = Math.abs(angleDeg);
+
+        // 1. Throttle transition zone on left & right sides (20° above/below horizontal, i.e. 40° total on each side)
+        let transitionFactor = 1.0;
+        if (absAngle < 20.0) {
+          // Right side transition zone (-20° to +20°)
+          transitionFactor = absAngle / 20.0;
+        } else if ((180.0 - absAngle) < 20.0) {
+          // Left side transition zone (160° to 180° & -160° to -180°)
+          transitionFactor = (180.0 - absAngle) / 20.0;
+        }
+        rawThrottle *= Math.max(0.0, Math.min(1.0, transitionFactor));
+
+        // 2. Steering mapping over 140° top arc (20° to 160°) and 140° bottom arc (-20° to -160°)
+        // 70° left and 70° right from center (90° / -90°), output max ±45.0°
+        let rawSteer = 0.0;
+        if (dy <= 0) {
+          // Top arc: 90° is 0.0°, 20° is +45.0° (right), 160° is -45.0° (left)
+          const offset = angleDeg - 90.0;
+          rawSteer = -(offset / 70.0) * 45.0;
+        } else {
+          // Bottom arc: -90° is 0.0°, -20° is +45.0° (right), -160° is -45.0° (left)
+          const offset = angleDeg + 90.0;
+          rawSteer = (offset / 70.0) * 45.0;
+        }
+
+        steeringValue = Math.max(-45.0, Math.min(45.0, rawSteer));
+      } else {
+        steeringValue = 0.0;
+      }
+
+      throttleValue = rawThrottle;
 
       updateGauges(throttleValue, steeringValue);
     }
